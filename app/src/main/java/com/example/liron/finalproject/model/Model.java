@@ -110,6 +110,12 @@ public class Model {
         void hideProgressBar();
     }
 
+    public interface SaveRideListener
+    {
+        void showProgressBar();
+        void hideProgressBar();
+    }
+
     public void getAllRidesRemote(GetAllRidesListener listener)
     {
         modelFirebase.getAllRides(listener);
@@ -174,9 +180,9 @@ public class Model {
         modelFirebase.signInAfterRegister(email,password,listener,dataBaseListener);
     }
 
-    public void addRide(Ride r)
+    public void addRide(Ride r, SaveRideListener saveRideListener)
     {
-        modelFirebase.addRide(r);
+        modelFirebase.addRide(r,saveRideListener);
     }
 
 }

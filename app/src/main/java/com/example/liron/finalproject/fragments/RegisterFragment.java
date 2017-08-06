@@ -24,11 +24,13 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 
+
 import com.example.liron.finalproject.Constants;
 import com.example.liron.finalproject.MyAppContext;
 import com.example.liron.finalproject.R;
 import com.example.liron.finalproject.Utility;
 import com.example.liron.finalproject.model.User;
+import com.example.liron.finalproject.Utilities.utilities;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -146,7 +148,7 @@ public class RegisterFragment extends Fragment {
         Bitmap userImage=((BitmapDrawable)contactPhotoIV.getDrawable()).getBitmap();
         String fName=fNameET.getText().toString();
         String lName=lNameET.getText().toString();
-        long birthday=convertDateStringToMillis(birthdayET.getText().toString());
+        long birthday=utilities.convertDateStringToMillis(birthdayET.getText().toString());
         String email=emailET.getText().toString();
         String password=passwordET.getText().toString();
 
@@ -242,19 +244,6 @@ public class RegisterFragment extends Fragment {
         return registerBtn.getText().toString();
     }
 
-    public long convertDateStringToMillis(String date)
-    {
-        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy"); // day/month/year
-
-        Date d = null;
-        try {
-            d = formatter.parse(date);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        long millis = d.getTime();
-        return millis;
-    }
 
     //----------functions which handle selection of image from camera or gallery---------------
 

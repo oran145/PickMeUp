@@ -108,7 +108,7 @@ public class MainActivity extends Activity {
 
             @Override
             public void goToChatActivity() {
-                Intent intent = new Intent(MainActivity.this, PickMeApp.class);
+                Intent intent = new Intent(MainActivity.this, PickMeAppActivity.class);
                 finish();
                 startActivity(intent);
             }

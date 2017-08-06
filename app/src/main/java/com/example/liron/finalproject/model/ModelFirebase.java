@@ -337,7 +337,7 @@ public class ModelFirebase {
         database.getReference("users").child(userId).child("isSignedIn").setValue(isSignedIn);
     }
 
-    public void addRide(Ride ride,final Model.LoginListener viewlistener)
+    public void addRide(Ride ride,final Model.SaveRideListener saveListener)
     {
         //saving ride deatails to storage
         HashMap<String, Object> result = new HashMap<>();
@@ -351,10 +351,10 @@ public class ModelFirebase {
         result.put("hitchhikers",ride.getHitchhikers());
 
 
-        DatabaseReference myRef = database.getReference("ride").child(ride.getRideID());
+        DatabaseReference myRef = database.getReference("ride").child("1");
         myRef.setValue(result);
 
-        viewlistener.hideProgressBar();
+        saveListener.hideProgressBar();
 
     }
 

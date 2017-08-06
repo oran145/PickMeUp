@@ -18,7 +18,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".PickMeApp"
+            android:name=".PickMeAppActivity"
             android:label="@string/title_activity_pick_me_app"></activity>
     </application>
 
