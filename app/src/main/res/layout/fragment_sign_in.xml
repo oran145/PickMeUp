@@ -1,0 +1,81 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.example.liron.finalproject.fragments.SignInFragment">
+
+    <TextView
+        android:paddingTop="50dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/title_fragment_sign_in"
+        android:textColor="@color/page_title_color"
+        android:textStyle="bold"
+        android:textSize="@dimen/title_size"
+        android:paddingRight="30dp"
+        android:paddingLeft="30dp"
+        android:textAppearance="@android:style/TextAppearance.DeviceDefault.Large"
+        android:textAlignment="center"/>
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="50dp"
+        android:paddingLeft="30dp"
+        android:paddingRight="30dp"
+        >
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp">
+
+            <TextView
+                android:text="@string/email_colon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="@android:style/TextAppearance.DeviceDefault.Large" />
+            <EditText
+                android:id="@+id/fragment_signIn_email_editText"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:hint="@string/hint_email"
+                android:inputType="textEmailAddress" />
+
+
+        </TableRow>
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp">
+            <TextView
+                android:text="@string/password_colon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="@android:style/TextAppearance.DeviceDefault.Large" />
+            <EditText
+                android:id="@+id/fragment_signIn_password_editText"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:hint="@string/hint_password"
+                android:inputType="textPassword" />
+        </TableRow>
+
+    </TableLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        android:layout_marginTop="50dp">
+        <Button
+            android:text="@string/sign_in"
+            android:id="@+id/fragment_signIn_btn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="30dp"
+            android:layout_marginLeft="30dp"/>
+    </LinearLayout>
+
+</LinearLayout>

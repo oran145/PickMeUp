@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "945852753568",
+    "firebase_url": "https://pick-me-up-4c2bb.firebaseio.com",
+    "project_id": "pick-me-up-4c2bb",
+    "storage_bucket": "pick-me-up-4c2bb.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:945852753568:android:644db707999b38ac",
+        "android_client_info": {
+          "package_name": "com.example.liron.finalproject"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "945852753568-ti9dqkq6da4guj9o2n2sgch8quskgapr.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.liron.finalproject",
+            "certificate_hash": "2d74e57091af4423c484f6e7bc8c7adc3de89eec"
+          }
+        },
+        {
+          "client_id": "945852753568-5ia7fiifcavbmqpss4jvgj7a9m3qsoau.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCe9_1ohd-MwgrJ6Dbf8hrRQpfWWXC0NDM"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "945852753568-5ia7fiifcavbmqpss4jvgj7a9m3qsoau.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

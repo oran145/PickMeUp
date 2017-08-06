@@ -1,0 +1,14 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.liron.finalproject.fragments.RidesListFragment">
+
+    <!-- TODO: Update blank fragment layout -->
+  <ListView
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:id="@+id/fragment_all_rides_list">
+  </ListView>
+
+</FrameLayout>

@@ -1,0 +1,57 @@
+<resources>
+    <string name="app_name">Pick Me App</string>
+
+    <!--Firebase strings:-->
+    <string name="emailpassword_status_fmt">Email User: %1$s (verified: %2$b)</string>
+    <string name="firebase_status_fmt">Firebase User: %s</string>
+    <string name="signed_out">Signed Out</string>
+    <string name="loading">Loading…</string>
+    <string name="auth_failed">Authentication failed</string>
+
+    <!--Srings for xml files of firebase login-->
+    <string name="desc_firebase_lockup">Firebase logo and name</string>
+    <string name="emailpassword_title_text">Email and Password</string>
+    <string name="hint_email">Email</string>
+    <string name="hint_password">Password</string>
+    <string name="sign_in">Sign In</string>
+    <string name="create_account">Create Account</string>
+    <string name="sign_out">Sign Out</string>
+    <string name="verify_email">Verify Email</string>
+
+    <!--my strings-->
+    <string name="register">Register</string>
+    <string name="email_colon">Email:</string>
+    <string name="password_colon">Password:</string>
+    <string name="first_name_colon">First Name:</string>
+    <string name="last_name_colon">Last Name:</string>
+    <string name="your_picture_colon">Your Photo:</string>
+    <string name="birthday_colon">Birthday:</string>
+    <string name="from">From:</string>
+    <string name="to">To:</string>
+    <string name="date">Date:</string>
+    <string name="time">Time:</string>
+    <string name="hitchhiker">Hitchhiker:</string>
+
+    <string name="hint_first_name">First Name</string>
+    <string name="hint_last_name">Last Name</string>
+    <string name="hint_birthday">Birthday</string>
+    <string name="hint_date">Date</string>
+    <string name="hint_from">From</string>
+    <string name="hint_to">To</string>
+    <string name="hint_time">Time</string>
+    <string name="hint_hitchhiker">Hitchhiker</string>
+
+
+
+    <string name="title_fragment_sign_in">Sign In:</string>
+
+    <string name="title_fragment_register">Registration:</string>
+    <string name="title_activity_chat">Chat</string>
+
+    <string name="all_contacts">All Contacts</string>
+    <string name="my_contacts">My Contacts</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string name="born_in">Born in: </string>
+    <string name="title_activity_pick_me_app">PickMeApp</string>
+</resources>
