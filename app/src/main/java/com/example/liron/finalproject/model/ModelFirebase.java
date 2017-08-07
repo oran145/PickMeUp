@@ -22,7 +22,6 @@ import com.google.firebase.storage.UploadTask;
 
 import java.io.ByteArrayOutputStream;
 import java.util.HashMap;
-import java.util.List;
 
 /**
  * Created by liron on 25-Jul-17.
@@ -341,7 +340,7 @@ public class ModelFirebase {
     {
         //saving ride deatails to storage
         HashMap<String, Object> result = new HashMap<>();
-        result.put("rideID",ride.getRideID());
+       // result.put("rideID",ride.getRideID());
         result.put("rideOwner",ride.getRideOwner());
         result.put("rideDate",ride.getDate());
         result.put("rideTime",ride.getTime());
@@ -351,7 +350,8 @@ public class ModelFirebase {
         result.put("hitchhikers",ride.getHitchhikers());
 
 
-        DatabaseReference myRef = database.getReference("ride").child("1");
+        DatabaseReference myRef = database.getReference("ride").push();
+        //result.put("rideID",myRef.getKey());
         myRef.setValue(result);
 
         saveListener.hideProgressBar();
@@ -360,9 +360,9 @@ public class ModelFirebase {
 
 
     public void getAllRides(final Model.GetAllRidesListener listener) {
-        listener.showProgressBar();
+//        listener.showProgressBar();
 
-        DatabaseReference myRef = database.getReference("rides");
+        DatabaseReference myRef = database.getReference("ride");
         myRef.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
@@ -371,15 +371,17 @@ public class ModelFirebase {
                 {
                     //getting one ride
                     final Ride ride = new Ride();
-
-                    ride.setRideID(dataSnapshot.child("rideID").getValue().toString());
-                    ride.setRideOwner((User)dataSnapshot.child("rideOwner").getValue());
-                    ride.setDate((long)dataSnapshot.child("rideDate").getValue());
-                    ride.setTime((long)dataSnapshot.child("rideTime").getValue());
+//                        ride.setRideID(snapshot.child("rideID").getValue().toString());
+//                        ride.setRideOwner((User)snapshot.child("rideOwner").getValue());
+//                        ride.setDate((long)snapshot.child("rideDate").getValue());
+//                        ride.setTime((long)snapshot.child("rideTime").getValue());
                     ride.setFrom(dataSnapshot.child("from").getValue().toString());
                     ride.setTo(dataSnapshot.child("to").getValue().toString());
-                    ride.setFreeSeats((int)dataSnapshot.child("freeSeats").getValue());
-                    ride.setHitchhikers((List<User>)dataSnapshot.child("hitchhikers").getValue());
+                    //ride.setFreeSeats((int)dataSnapshot.child("freeSeats").getValue());
+                    //ride.setHitchhikers((List<User>)dataSnapshot.child(id).child("hitchhikers").getValue());
+
+
+
 
 //                    String absoluteImageName = dataSnapshot.child("imageUrl").getValue().toString();
 //
@@ -408,7 +410,7 @@ public class ModelFirebase {
                 else
                 {
                     Log.d("bla", "doesn't found");
-                    listener.hideProgressBar();
+//                    listener.hideProgressBar();
                 }
 
             }

@@ -2,7 +2,6 @@ package com.example.liron.finalproject;
 
 import android.app.Activity;
 import android.app.FragmentTransaction;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -31,8 +30,6 @@ public class PickMeAppActivity extends Activity {
         addRideFragment=new AddRideFragment();
         ridesListFragment=new RidesListFragment();
         saveRideListener = new Model.SaveRideListener(){
-
-
             @Override
             public void showProgressBar() {
                 progressBar.showProgressDialog();
@@ -50,6 +47,10 @@ public class PickMeAppActivity extends Activity {
             }
         });
 
+        ftr = getFragmentManager().beginTransaction();
+        ftr.add(R.id.pickMeUp_container, ridesListFragment);
+        ftr.show(ridesListFragment);
+        ftr.commit();
 
 
     }

@@ -8,7 +8,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.example.liron.finalproject.MyAppContext;
 import com.example.liron.finalproject.R;
@@ -17,6 +20,7 @@ import com.example.liron.finalproject.model.Ride;
 import com.example.liron.finalproject.model.User;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 
 public class RidesListFragment extends Fragment {
@@ -71,11 +75,13 @@ public class RidesListFragment extends Fragment {
         return view;
     }
 
-    public class RidesListAdapter extends BaseAdapter {
+    public class RidesListAdapter extends BaseAdapter
+    {
         private ArrayList listData;
         private LayoutInflater layoutInflater;
 
-        public RidesListAdapter(Context context, ArrayList listData) {
+        public RidesListAdapter(Context context, ArrayList listData)
+        {
             this.listData = listData;
             layoutInflater = LayoutInflater.from(context);
         }
@@ -96,29 +102,54 @@ public class RidesListFragment extends Fragment {
         }
 
         public View getView(int position, View convertView, ViewGroup parent) {
-//            ViewHolder holder;
-//            if (convertView == null) {
-            convertView = layoutInflater.inflate(R.layout.list_row, null);
-//                holder = new ViewHolder();
-//                holder.contactImage = (ImageView) convertView.findViewById(R.id.list_row_contactImage_imageView);
-//                holder.firstName = (TextView) convertView.findViewById(R.id.list_row_firstName_textView);
-//                holder.lastName = (TextView) convertView.findViewById(R.id.list_row_lastName_textView);
-//                holder.userId = (TextView) convertView.findViewById(R.id.list_row_invisibleUserId_textView);
-//                convertView.setTag(holder);
-//            } else {
-//                holder = (ViewHolder) convertView.getTag();
-//            }
-//
-//            if (listData == null) {
-//                return convertView;
-//            }
-//            User userInPosition = (User) listData.get(position);
-//            holder.firstName.setText(userInPosition.getFirstName());
-//            holder.lastName.setText(userInPosition.getLastName());
-//            holder.contactImage.setImageBitmap(userInPosition.getUserImage());
-//            holder.userId.setText(userInPosition.getUserID());
+            ViewHolder holder;
+            if (convertView == null) {
+                convertView = layoutInflater.inflate(R.layout.list_row, null);
+                holder = new ViewHolder();
+                holder.contactImage = (ImageView) convertView.findViewById(R.id.list_row_contactImage_imageView);
+                holder.firstName = (TextView) convertView.findViewById(R.id.list_row_firstName_textView);
+                holder.lastName = (TextView) convertView.findViewById(R.id.list_row_lastName_textView);
+                holder.userId = (TextView) convertView.findViewById(R.id.list_row_invisibleUserId_textView);
+                holder.rideDate = (EditText) convertView.findViewById(R.id.list_row_ride_date_editText);
+                holder.freeSeats = (TextView) convertView.findViewById(R.id.list_row_freeSeats_textView);
+                holder.from = (TextView) convertView.findViewById(R.id.list_row_from_textView);
+                holder.to = (TextView) convertView.findViewById(R.id.list_row_to_textView);
+                convertView.setTag(holder);
+            }
+            else
+            {
+                holder = (ViewHolder) convertView.getTag();
+            }
+
+            if (listData == null)
+            {
+                return convertView;
+            }
+
+            Ride rideInPosition = (Ride) listData.get(position);
+
+            holder.firstName.setText(rideInPosition.getRideOwner().getFirstName());
+            holder.lastName.setText(rideInPosition.getRideOwner().getLastName());
+            holder.contactImage.setImageBitmap(rideInPosition.getRideOwner().getUserImage());
+            holder.userId.setText(rideInPosition.getRideOwner().getUserID());
+            holder.rideDate.setText(Objects.toString(rideInPosition.getDate(),null));
+            holder.freeSeats.setText(rideInPosition.getFreeSeats());
+            holder.from.setText(rideInPosition.getFrom());
+            holder.to.setText(rideInPosition.getTo());
 
             return convertView;
+        }
+
+        class ViewHolder
+        {
+            ImageView contactImage;
+            TextView firstName;
+            TextView lastName;
+            TextView userId;
+            EditText rideDate;
+            TextView freeSeats;
+            TextView from;
+            TextView to;
         }
 
         public void add(Ride ride)

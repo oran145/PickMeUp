@@ -33,7 +33,7 @@
         android:layout_height="wrap_content"
         android:layout_width="wrap_content" />
     <EditText
-        android:id="@+id/fragment_register_date_editText"
+        android:id="@+id/list_row_ride_date_editText"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
