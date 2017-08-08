@@ -16,6 +16,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -35,6 +36,7 @@ public class ModelFirebase {
     private FirebaseAuth mAuth;
     // [END declare_auth]
 
+    private User currentuser;
     // [START declare_auth_listener]
     private FirebaseAuth.AuthStateListener mAuthListener;
     // [END declare_auth_listener]
@@ -336,12 +338,39 @@ public class ModelFirebase {
         database.getReference("users").child(userId).child("isSignedIn").setValue(isSignedIn);
     }
 
-    public void addRide(Ride ride,final Model.SaveRideListener saveListener)
+    public void addRide(final Ride ride, final Model.SaveRideListener saveListener)
     {
-        //saving ride deatails to storage
+
+        String ownerId = mAuth.getCurrentUser().getUid();
+
+        database.getReference("users").child(ownerId).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                User currentuser = new User();
+                currentuser.setUserID(dataSnapshot.child("id").getValue().toString());
+                currentuser.setImageName(dataSnapshot.child("imageUrl").getValue().toString());
+                currentuser.setFirstName(dataSnapshot.child("firstName").getValue().toString());
+                currentuser.setLastName(dataSnapshot.child("lastName").getValue().toString());
+                currentuser.setBirthday((long)dataSnapshot.child("birthday").getValue());
+
+                insertRideToDb(currentuser,ride);
+                saveListener.hideProgressBar();
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    public void insertRideToDb(User currentuser , Ride ride)
+    {
         HashMap<String, Object> result = new HashMap<>();
-       // result.put("rideID",ride.getRideID());
-        result.put("rideOwner",ride.getRideOwner());
+        if(currentuser != null)
+        {
+            result.put("rideOwner", currentuser);
+        }
         result.put("rideDate",ride.getDate());
         result.put("rideTime",ride.getTime());
         result.put("from",ride.getFrom());
@@ -353,8 +382,6 @@ public class ModelFirebase {
         DatabaseReference myRef = database.getReference("ride").push();
         //result.put("rideID",myRef.getKey());
         myRef.setValue(result);
-
-        saveListener.hideProgressBar();
 
     }
 
@@ -371,15 +398,23 @@ public class ModelFirebase {
                 {
                     //getting one ride
                     final Ride ride = new Ride();
-//                        ride.setRideID(snapshot.child("rideID").getValue().toString());
-//                        ride.setRideOwner((User)snapshot.child("rideOwner").getValue());
-//                        ride.setDate((long)snapshot.child("rideDate").getValue());
-//                        ride.setTime((long)snapshot.child("rideTime").getValue());
+
+                    User currentuser = new User();
+                    currentuser.setUserID(dataSnapshot.child("rideOwner").child("userID").getValue().toString());
+                    currentuser.setImageName(dataSnapshot.child("rideOwner").child("imageName").getValue().toString());
+                    currentuser.setFirstName(dataSnapshot.child("rideOwner").child("firstName").getValue().toString());
+                    currentuser.setLastName(dataSnapshot.child("rideOwner").child("lastName").getValue().toString());
+                    currentuser.setBirthday((long)dataSnapshot.child("rideOwner").child("birthday").getValue());
+
+                    ride.setRideOwner(currentuser);
+                    ride.setDate((long)dataSnapshot.child("rideDate").getValue());
+                    ride.setTime((long)dataSnapshot.child("rideTime").getValue());
                     ride.setFrom(dataSnapshot.child("from").getValue().toString());
                     ride.setTo(dataSnapshot.child("to").getValue().toString());
-                    //ride.setFreeSeats((int)dataSnapshot.child("freeSeats").getValue());
+                    ride.setFreeSeats((long)dataSnapshot.child("freeSeats").getValue());
                     //ride.setHitchhikers((List<User>)dataSnapshot.child(id).child("hitchhikers").getValue());
-
+                    listener.onComplete(ride);
+                    listener.hideProgressBar();
 
 
 
@@ -435,5 +470,4 @@ public class ModelFirebase {
             }
         });
     }
-
 }

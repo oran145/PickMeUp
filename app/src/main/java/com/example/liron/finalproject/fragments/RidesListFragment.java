@@ -8,7 +8,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -65,7 +64,7 @@ public class RidesListFragment extends Fragment {
             }
 
             public void hideProgressBar() {
-                delegate.hideProgressBar();
+//                delegate.hideProgressBar();
             }
 
 
@@ -110,10 +109,10 @@ public class RidesListFragment extends Fragment {
                 holder.firstName = (TextView) convertView.findViewById(R.id.list_row_firstName_textView);
                 holder.lastName = (TextView) convertView.findViewById(R.id.list_row_lastName_textView);
                 holder.userId = (TextView) convertView.findViewById(R.id.list_row_invisibleUserId_textView);
-                holder.rideDate = (EditText) convertView.findViewById(R.id.list_row_ride_date_editText);
-                holder.freeSeats = (TextView) convertView.findViewById(R.id.list_row_freeSeats_textView);
-                holder.from = (TextView) convertView.findViewById(R.id.list_row_from_textView);
-                holder.to = (TextView) convertView.findViewById(R.id.list_row_to_textView);
+                holder.rideDate = (TextView) convertView.findViewById(R.id.list_row_ride_date_textView);
+                holder.freeSeats = (TextView) convertView.findViewById(R.id.list_row_ride_hitchhiker_textView);
+                holder.from = (TextView) convertView.findViewById(R.id.list_row_ride_from_textView);
+                holder.to = (TextView) convertView.findViewById(R.id.list_row_ride_to_textView);
                 convertView.setTag(holder);
             }
             else
@@ -133,7 +132,7 @@ public class RidesListFragment extends Fragment {
             holder.contactImage.setImageBitmap(rideInPosition.getRideOwner().getUserImage());
             holder.userId.setText(rideInPosition.getRideOwner().getUserID());
             holder.rideDate.setText(Objects.toString(rideInPosition.getDate(),null));
-            holder.freeSeats.setText(rideInPosition.getFreeSeats());
+            holder.freeSeats.setText(Objects.toString(rideInPosition.getFreeSeats(),null));
             holder.from.setText(rideInPosition.getFrom());
             holder.to.setText(rideInPosition.getTo());
 
@@ -146,7 +145,7 @@ public class RidesListFragment extends Fragment {
             TextView firstName;
             TextView lastName;
             TextView userId;
-            EditText rideDate;
+            TextView rideDate;
             TextView freeSeats;
             TextView from;
             TextView to;

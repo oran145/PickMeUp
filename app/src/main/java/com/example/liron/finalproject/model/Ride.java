@@ -14,7 +14,7 @@ public class Ride {
     private long time;
     private String from;
     private String to;
-    private int freeSeats;
+    private long freeSeats;
     private List<User> hitchhikers;
 
     public Ride(String rideID, User rideOwner, long date, long time, String from, String to, int freeSeats, List<User> hitchhikers) {
@@ -78,11 +78,11 @@ public class Ride {
         this.to = to;
     }
 
-    public int getFreeSeats() {
+    public long getFreeSeats() {
         return freeSeats;
     }
 
-    public void setFreeSeats(int freeSeats) {
+    public void setFreeSeats(long freeSeats) {
         this.freeSeats = freeSeats;
     }
 
