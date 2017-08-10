@@ -1,9 +1,13 @@
 package com.example.liron.finalproject.model;
 
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.animation.GlideAnimation;
+import com.bumptech.glide.request.target.SimpleTarget;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -135,7 +139,7 @@ public class ModelFirebase {
 
                             //enter the image name(not absolute path)
                             String imageName=user.getUserID()+"_"+System.currentTimeMillis();
-                            user.setImageName(imageName);
+                            user.setImageUrl(imageName);
 
                             sular.saveUserToLocal(user);
                             sular.saveUserToRemote(user);
@@ -293,7 +297,7 @@ public class ModelFirebase {
     private void saveImage(final User user,final Model.LoginListener viewlistener){
 
         Bitmap imageBmp=user.getUserImage();
-        String imageName=user.getImageName();
+        String imageName=user.getImageUrl();
 
         StorageReference imagesRef = mStorageRef.child("images").child(imageName);
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -349,7 +353,7 @@ public class ModelFirebase {
 
                 User currentuser = new User();
                 currentuser.setUserID(dataSnapshot.child("id").getValue().toString());
-                currentuser.setImageName(dataSnapshot.child("imageUrl").getValue().toString());
+                currentuser.setImageUrl(dataSnapshot.child("imageUrl").getValue().toString());
                 currentuser.setFirstName(dataSnapshot.child("firstName").getValue().toString());
                 currentuser.setLastName(dataSnapshot.child("lastName").getValue().toString());
                 currentuser.setBirthday((long)dataSnapshot.child("birthday").getValue());
@@ -401,7 +405,7 @@ public class ModelFirebase {
 
                     User currentuser = new User();
                     currentuser.setUserID(dataSnapshot.child("rideOwner").child("userID").getValue().toString());
-                    currentuser.setImageName(dataSnapshot.child("rideOwner").child("imageName").getValue().toString());
+                    currentuser.setImageUrl(dataSnapshot.child("rideOwner").child("imageUrl").getValue().toString());
                     currentuser.setFirstName(dataSnapshot.child("rideOwner").child("firstName").getValue().toString());
                     currentuser.setLastName(dataSnapshot.child("rideOwner").child("lastName").getValue().toString());
                     currentuser.setBirthday((long)dataSnapshot.child("rideOwner").child("birthday").getValue());
@@ -413,34 +417,28 @@ public class ModelFirebase {
                     ride.setTo(dataSnapshot.child("to").getValue().toString());
                     ride.setFreeSeats((long)dataSnapshot.child("freeSeats").getValue());
                     //ride.setHitchhikers((List<User>)dataSnapshot.child(id).child("hitchhikers").getValue());
-                    listener.onComplete(ride);
-//                    listener.hideProgressBar();
 
+                    String absoluteImageName = dataSnapshot.child("rideOwner").child("imageUrl").getValue().toString();
 
+                    String imageName = absoluteImageName.substring(absoluteImageName.indexOf(ride.getRideOwner().getUserID()), absoluteImageName.indexOf("?"));
+                    ride.getRideOwner().setImageUrl(imageName);
 
-//                    String absoluteImageName = dataSnapshot.child("imageUrl").getValue().toString();
-//
-//                    String imageName=mStorageRef.child(absoluteImageName).getName();
-//                    String imageName = absoluteImageName.substring(absoluteImageName.indexOf(user.getUserID()), absoluteImageName.indexOf("?"));
-//                    user.setImageName(imageName);
+                    Glide.with(listener.getAppContext())
+                            .load(absoluteImageName)
+                            .asBitmap()
+                            .toBytes()
+                            .centerCrop()
+                            .into(new SimpleTarget<byte[]>(60, 60) {
+                                @Override
+                                public void onResourceReady(byte[] data, GlideAnimation anim) {
 
-//                        Glide.with(listener.getAppContext())
-//                                .load(absoluteImageName)
-//                                .asBitmap()
-//                                .toBytes()
-//                                .centerCrop()
-//                                .into(new SimpleTarget<byte[]>(60, 60) {
-//                                    @Override
-//                                    public void onResourceReady(byte[] data, GlideAnimation anim) {
-//
-//                                        Bitmap bitmap = BitmapFactory.decodeByteArray(data, 0, data.length);
-//                                        user.setUserImage(bitmap);
-//
-//                                        listener.onComplete(user);
-//                                        listener.hideProgressBar();
-//                                    }
-//                                });
+                                    Bitmap bitmap = BitmapFactory.decodeByteArray(data, 0, data.length);
+                                    ride.getRideOwner().setUserImage(bitmap);
 
+                                    listener.onComplete(ride);
+                                    listener.hideProgressBar();
+                                }
+                            });
                 }
                 else
                 {

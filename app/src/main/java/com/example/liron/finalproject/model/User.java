@@ -9,7 +9,7 @@ import android.graphics.Bitmap;
 public class User {
     private String userID;
     private Bitmap userImage;
-    private String imageName;
+    private String imageUrl;
     private String firstName;
     private String lastName;
     private long birthday;
@@ -19,10 +19,10 @@ public class User {
     private int isSignedIn;//int because this is how it going to be stored in sqlite,0-not signed ,1- signed
 
 
-    public User(String userID, Bitmap userImage, String imageName, String firstName, String lastName, long birthday, String email, String password,long lastUpdated,int isSignedIn) {
+    public User(String userID, Bitmap userImage, String imageUrl, String firstName, String lastName, long birthday, String email, String password, long lastUpdated, int isSignedIn) {
         this.userID = userID;
         this.userImage = userImage;
-        this.imageName=imageName;
+        this.imageUrl = imageUrl;
         this.firstName = firstName;
         this.lastName = lastName;
         this.birthday = birthday;
@@ -90,12 +90,12 @@ public class User {
         this.password = password;
     }
 
-    public String getImageName() {
-        return imageName;
+    public String getImageUrl() {
+        return imageUrl;
     }
 
-    public void setImageName(String imageName) {
-        this.imageName = imageName;
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 
     public long getLastUpdated() {
