@@ -12,6 +12,7 @@ import com.example.liron.finalproject.fragments.AddRideFragment;
 import com.example.liron.finalproject.fragments.RidesListFragment;
 import com.example.liron.finalproject.model.Model;
 import com.example.liron.finalproject.model.Ride;
+import com.example.liron.finalproject.model.User;
 
 public class PickMeAppActivity extends Activity {
 
@@ -26,6 +27,7 @@ public class PickMeAppActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        progressBar = new MyProgressBar(this);
         setContentView(R.layout.activity_pick_me_app);
         addRideFragment=new AddRideFragment();
         ridesListFragment=new RidesListFragment();
@@ -40,10 +42,32 @@ public class PickMeAppActivity extends Activity {
                 progressBar.hideProgressDialog();
             }
         };
+
+        ridesListFragment.setDelegate(new RidesListFragment.Delegate() {
+            @Override
+            public void onItemClick(User user) {
+            }
+
+            @Override
+            public void showProgressBar() {
+                progressBar.showProgressDialog();
+            }
+
+            @Override
+            public void hideProgressBar() {
+                progressBar.hideProgressDialog();
+            }
+        });
+
         addRideFragment.setDelegate(new AddRideFragment.Delegate() {
             @Override
             public void saveRide(Ride r) {
                 Model.getInstance().addRide(r,saveRideListener);
+                ftr=getFragmentManager().beginTransaction();
+                ridesListFragment = new RidesListFragment();
+                ftr.replace(R.id.pickMeUp_container, ridesListFragment);
+                ftr.addToBackStack("addRide");
+                ftr.commit();
             }
         });
 

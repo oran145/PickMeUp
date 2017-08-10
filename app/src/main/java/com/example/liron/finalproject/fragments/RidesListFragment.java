@@ -63,8 +63,9 @@ public class RidesListFragment extends Fragment {
                 delegate.showProgressBar();
             }
 
-            public void hideProgressBar() {
-//                delegate.hideProgressBar();
+            public void hideProgressBar()
+            {
+                delegate.hideProgressBar();
             }
 
 

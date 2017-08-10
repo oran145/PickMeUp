@@ -414,7 +414,7 @@ public class ModelFirebase {
                     ride.setFreeSeats((long)dataSnapshot.child("freeSeats").getValue());
                     //ride.setHitchhikers((List<User>)dataSnapshot.child(id).child("hitchhikers").getValue());
                     listener.onComplete(ride);
-                    listener.hideProgressBar();
+//                    listener.hideProgressBar();
 
 
 
