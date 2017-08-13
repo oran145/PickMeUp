@@ -384,7 +384,7 @@ public class ModelFirebase {
 
 
         DatabaseReference myRef = database.getReference("ride").push();
-        //result.put("rideID",myRef.getKey());
+        result.put("rideID",myRef.getKey());
         myRef.setValue(result);
 
     }
@@ -416,6 +416,7 @@ public class ModelFirebase {
                     ride.setFrom(dataSnapshot.child("from").getValue().toString());
                     ride.setTo(dataSnapshot.child("to").getValue().toString());
                     ride.setFreeSeats((long)dataSnapshot.child("freeSeats").getValue());
+                    ride.setRideID(dataSnapshot.child("rideID").getValue().toString());
                     //ride.setHitchhikers((List<User>)dataSnapshot.child(id).child("hitchhikers").getValue());
 
                     String absoluteImageName = dataSnapshot.child("rideOwner").child("imageUrl").getValue().toString();

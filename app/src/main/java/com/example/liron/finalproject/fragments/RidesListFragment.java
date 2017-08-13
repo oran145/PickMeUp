@@ -107,7 +107,7 @@ public class RidesListFragment extends Fragment {
                 holder.contactImage = (ImageView) convertView.findViewById(R.id.list_row_contactImage_imageView);
                 holder.firstName = (TextView) convertView.findViewById(R.id.list_row_firstName_textView);
                 holder.lastName = (TextView) convertView.findViewById(R.id.list_row_lastName_textView);
-                holder.userId = (TextView) convertView.findViewById(R.id.list_row_invisibleUserId_textView);
+                holder.rideId = (TextView) convertView.findViewById(R.id.list_row_invisibleRideId_textView);
                 holder.rideDate = (TextView) convertView.findViewById(R.id.list_row_ride_date_textView);
                 holder.freeSeats = (TextView) convertView.findViewById(R.id.list_row_ride_hitchhiker_textView);
                 holder.from = (TextView) convertView.findViewById(R.id.list_row_ride_from_textView);
@@ -129,7 +129,7 @@ public class RidesListFragment extends Fragment {
             holder.firstName.setText(rideInPosition.getRideOwner().getFirstName());
             holder.lastName.setText(rideInPosition.getRideOwner().getLastName());
             holder.contactImage.setImageBitmap(rideInPosition.getRideOwner().getUserImage());
-            holder.userId.setText(rideInPosition.getRideOwner().getUserID());
+            holder.rideId.setText(rideInPosition.getRideID());
             holder.rideDate.setText(Objects.toString(rideInPosition.getDate(),null));
             holder.freeSeats.setText(Objects.toString(rideInPosition.getFreeSeats(),null));
             holder.from.setText(rideInPosition.getFrom());
@@ -143,7 +143,7 @@ public class RidesListFragment extends Fragment {
             ImageView contactImage;
             TextView firstName;
             TextView lastName;
-            TextView userId;
+            TextView rideId;
             TextView rideDate;
             TextView freeSeats;
             TextView from;

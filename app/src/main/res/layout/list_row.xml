@@ -16,7 +16,7 @@
             android:src="@drawable/avatar"
             android:adjustViewBounds="true"/>
         <TextView
-            android:id="@+id/list_row_invisibleUserId_textView"
+            android:id="@+id/list_row_invisibleRideId_textView"
             android:visibility="invisible"
             android:layout_height="0dp"
             android:layout_width="0dp" />
