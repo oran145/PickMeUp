@@ -21,7 +21,6 @@ public class PickMeAppActivity extends Activity {
     Model.SaveRideListener saveRideListener;
     AddRideFragment addRideFragment;
 
-
     RidesListFragment ridesListFragment;
 
     @Override
@@ -43,6 +42,30 @@ public class PickMeAppActivity extends Activity {
             }
         };
 
+        setRidesListDelegate();
+
+        addRideFragment.setDelegate(new AddRideFragment.Delegate() {
+            @Override
+            public void saveRide(Ride r) {
+                Model.getInstance().addRide(r,saveRideListener);
+                ftr=getFragmentManager().beginTransaction();
+                ridesListFragment = new RidesListFragment();
+                setRidesListDelegate();
+                ftr.replace(R.id.pickMeUp_container, ridesListFragment);
+                ftr.addToBackStack("addRide");
+                ftr.commit();
+            }
+        });
+
+        ftr = getFragmentManager().beginTransaction();
+        ftr.add(R.id.pickMeUp_container, ridesListFragment);
+        ftr.show(ridesListFragment);
+        ftr.commit();
+
+
+    }
+
+    private void setRidesListDelegate() {
         ridesListFragment.setDelegate(new RidesListFragment.Delegate() {
             @Override
             public void onItemClick(User user) {
@@ -58,25 +81,6 @@ public class PickMeAppActivity extends Activity {
                 progressBar.hideProgressDialog();
             }
         });
-
-        addRideFragment.setDelegate(new AddRideFragment.Delegate() {
-            @Override
-            public void saveRide(Ride r) {
-                Model.getInstance().addRide(r,saveRideListener);
-                ftr=getFragmentManager().beginTransaction();
-                ridesListFragment = new RidesListFragment();
-                ftr.replace(R.id.pickMeUp_container, ridesListFragment);
-                ftr.addToBackStack("addRide");
-                ftr.commit();
-            }
-        });
-
-        ftr = getFragmentManager().beginTransaction();
-        ftr.add(R.id.pickMeUp_container, ridesListFragment);
-        ftr.show(ridesListFragment);
-        ftr.commit();
-
-
     }
 
     @Override

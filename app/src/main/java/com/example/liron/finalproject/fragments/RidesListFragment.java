@@ -67,8 +67,6 @@ public class RidesListFragment extends Fragment {
             {
                 delegate.hideProgressBar();
             }
-
-
         });
 
         // Inflate the layout for this fragment
