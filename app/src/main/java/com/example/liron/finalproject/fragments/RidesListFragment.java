@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -37,6 +38,7 @@ public class RidesListFragment extends Fragment {
         this.delegate = dlg;
     }
 
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -49,6 +51,13 @@ public class RidesListFragment extends Fragment {
         ridesAdapter = new RidesListAdapter(MyAppContext.getAppContext(), data);
         listView.setAdapter(ridesAdapter);
 
+        getRides();
+
+        // Inflate the layout for this fragment
+        return view;
+    }
+
+    private void getRides() {
         Model.getInstance().getAllRidesRemote(new Model.GetAllRidesListener()
         {
             public void onComplete(Ride ride) {
@@ -68,9 +77,6 @@ public class RidesListFragment extends Fragment {
                 delegate.hideProgressBar();
             }
         });
-
-        // Inflate the layout for this fragment
-        return view;
     }
 
     public class RidesListAdapter extends BaseAdapter
@@ -112,6 +118,25 @@ public class RidesListFragment extends Fragment {
                 holder.freeSeats = (TextView) convertView.findViewById(R.id.list_row_ride_hitchhiker_textView);
                 holder.from = (TextView) convertView.findViewById(R.id.list_row_ride_from_textView);
                 holder.to = (TextView) convertView.findViewById(R.id.list_row_ride_to_textView);
+                holder.plusButton = (Button)  convertView.findViewById(R.id.list_row_ride_plus_button);
+
+                holder.plusButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v)
+                    {
+                        int pos = (int) v.getTag();
+                        Ride rideInPosition = (Ride) listData.get(pos);
+                        Model.getInstance().addHitchhiker(rideInPosition.getRideID(), new Model.updateListener() {
+                            @Override
+                            public void onUpdate() {
+                                listData.clear();
+                                getRides();
+                                ridesAdapter.notifyDataSetChanged();
+                            }
+                        });
+                    }
+                });
+
                 convertView.setTag(holder);
             }
             else
@@ -134,6 +159,7 @@ public class RidesListFragment extends Fragment {
             holder.freeSeats.setText(Objects.toString(rideInPosition.getFreeSeats(),null));
             holder.from.setText(rideInPosition.getFrom());
             holder.to.setText(rideInPosition.getTo());
+            holder.plusButton.setTag(position);
 
             return convertView;
         }
@@ -141,6 +167,7 @@ public class RidesListFragment extends Fragment {
         class ViewHolder
         {
             ImageView contactImage;
+            Button plusButton;
             TextView firstName;
             TextView lastName;
             TextView rideId;

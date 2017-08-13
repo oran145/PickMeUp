@@ -26,6 +26,7 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import java.io.ByteArrayOutputStream;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
@@ -375,12 +376,17 @@ public class ModelFirebase {
         {
             result.put("rideOwner", currentuser);
         }
+
+        ArrayList<String> hitchhikers = new ArrayList<String>();
+
+        hitchhikers.add("");
+
         result.put("rideDate",ride.getDate());
         result.put("rideTime",ride.getTime());
         result.put("from",ride.getFrom());
         result.put("to",ride.getTo());
         result.put("freeSeats",ride.getFreeSeats());
-        result.put("hitchhikers",ride.getHitchhikers());
+        result.put("hitchhikers",hitchhikers);
 
 
         DatabaseReference myRef = database.getReference("ride").push();
@@ -417,7 +423,7 @@ public class ModelFirebase {
                     ride.setTo(dataSnapshot.child("to").getValue().toString());
                     ride.setFreeSeats((long)dataSnapshot.child("freeSeats").getValue());
                     ride.setRideID(dataSnapshot.child("rideID").getValue().toString());
-                    //ride.setHitchhikers((List<User>)dataSnapshot.child(id).child("hitchhikers").getValue());
+                    ride.setHitchhikers((ArrayList<String>)dataSnapshot.child("hitchhikers").getValue());
 
                     String absoluteImageName = dataSnapshot.child("rideOwner").child("imageUrl").getValue().toString();
 
@@ -469,4 +475,29 @@ public class ModelFirebase {
             }
         });
     }
+
+    public void addHitchhiker(String rideID ,final Model.updateListener listener) {
+        DatabaseReference myRef = database.getReference("ride").child(rideID);
+
+        myRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot)
+            {
+                long freeSteats = (long) dataSnapshot.child("freeSeats").getValue();
+                freeSteats--;
+                dataSnapshot.child("freeSeats").getRef().setValue(freeSteats);
+                ArrayList<String> hitchhikers = (ArrayList<String>) dataSnapshot.child("hitchhikers").getValue();
+                hitchhikers.add(mAuth.getCurrentUser().getUid());
+                dataSnapshot.child("hitchhikers").getRef().setValue(hitchhikers);
+                listener.onUpdate();
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+
 }

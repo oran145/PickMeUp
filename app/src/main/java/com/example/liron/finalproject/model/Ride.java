@@ -1,6 +1,6 @@
 package com.example.liron.finalproject.model;
 
-import java.util.List;
+import java.util.ArrayList;
 
 /**
  * Created by Oran on 01/08/2017.
@@ -15,9 +15,9 @@ public class Ride {
     private String from;
     private String to;
     private long freeSeats;
-    private List<User> hitchhikers;
+    private ArrayList<String> hitchhikers;
 
-    public Ride(String rideID, User rideOwner, long date, long time, String from, String to, int freeSeats, List<User> hitchhikers) {
+    public Ride(String rideID, User rideOwner, long date, long time, String from, String to, int freeSeats, ArrayList<String> hitchhikers) {
         this.rideID = rideID;
         this.rideOwner = rideOwner;
         this.date = date;
@@ -86,11 +86,11 @@ public class Ride {
         this.freeSeats = freeSeats;
     }
 
-    public List<User> getHitchhikers() {
+    public ArrayList<String> getHitchhikers() {
         return hitchhikers;
     }
 
-    public void setHitchhikers(List<User> hitchhikers) {
+    public void setHitchhikers(ArrayList<String> hitchhikers) {
         this.hitchhikers = hitchhikers;
     }
 }

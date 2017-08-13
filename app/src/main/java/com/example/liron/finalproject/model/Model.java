@@ -19,7 +19,15 @@ public class Model {
         return instance;
     }
 
+    public void addHitchhiker(String rideID,updateListener listener)
+    {
+        modelFirebase.addHitchhiker(rideID,listener);
+    }
 
+    public  interface updateListener
+    {
+        void onUpdate();
+    }
 
     public interface LoginListener{
         /**
