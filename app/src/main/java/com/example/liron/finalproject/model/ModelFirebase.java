@@ -456,12 +456,12 @@ public class ModelFirebase {
             }
             @Override
             public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-
+                listener.onChange();
             }
 
             @Override
             public void onChildRemoved(DataSnapshot dataSnapshot) {
-
+                listener.onChange();
             }
 
             @Override
@@ -476,7 +476,7 @@ public class ModelFirebase {
         });
     }
 
-    public void addHitchhiker(String rideID ,final Model.updateListener listener) {
+    public void addHitchhiker(String rideID ) {
         DatabaseReference myRef = database.getReference("ride").child(rideID);
 
         myRef.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -489,7 +489,6 @@ public class ModelFirebase {
                 ArrayList<String> hitchhikers = (ArrayList<String>) dataSnapshot.child("hitchhikers").getValue();
                 hitchhikers.add(mAuth.getCurrentUser().getUid());
                 dataSnapshot.child("hitchhikers").getRef().setValue(hitchhikers);
-                listener.onUpdate();
             }
 
             @Override
@@ -504,7 +503,7 @@ public class ModelFirebase {
         return mAuth.getCurrentUser().getUid();
     }
 
-    public void removeHitchhiker(String rideID, final Model.updateListener updateListener)
+    public void removeHitchhiker(String rideID)
     {
         DatabaseReference myRef = database.getReference("ride").child(rideID);
 
@@ -518,7 +517,6 @@ public class ModelFirebase {
                 ArrayList<String> hitchhikers = (ArrayList<String>) dataSnapshot.child("hitchhikers").getValue();
                 hitchhikers.remove(mAuth.getCurrentUser().getUid());
                 dataSnapshot.child("hitchhikers").getRef().setValue(hitchhikers);
-                updateListener.onUpdate();
             }
             @Override
             public void onCancelled(DatabaseError databaseError) {
@@ -527,9 +525,8 @@ public class ModelFirebase {
         });
     }
 
-    public void removeRide(String rideID, final Model.updateListener updateListener)
+    public void removeRide(String rideID)
     {
         database.getReference("ride").child(rideID).removeValue();
-        updateListener.onUpdate();
     }
 }

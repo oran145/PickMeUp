@@ -60,8 +60,13 @@ public class RidesListFragment extends Fragment {
     private void getRides() {
         Model.getInstance().getAllRidesRemote(new Model.GetAllRidesListener()
         {
-            public void onComplete(Ride ride) {
+            public void onComplete(Ride ride)
+            {
                 ridesAdapter.add(ride);
+            }
+            @Override
+            public void onChange() {
+                ridesAdapter.updateRides();
             }
 
             public Context getAppContext() {
@@ -134,39 +139,16 @@ public class RidesListFragment extends Fragment {
                         switch (buttonText)
                         {
                             case "+":
-                                Model.getInstance().addHitchhiker(rideInPosition.getRideID(), new Model.updateListener() {
-                                    @Override
-                                    public void onUpdate() {
-                                        listData.clear();
-                                        getRides();
-                                        ridesAdapter.notifyDataSetChanged();
-                                    }
-                                });
+                                Model.getInstance().addHitchhiker(rideInPosition.getRideID());
                             break;
-
                             case "-":
-                                Model.getInstance().removeHitchhiker(rideInPosition.getRideID(), new Model.updateListener() {
-                                    @Override
-                                    public void onUpdate() {
-                                        listData.clear();
-                                        getRides();
-                                        ridesAdapter.notifyDataSetChanged();
-                                    }
-                                });
+                                Model.getInstance().removeHitchhiker(rideInPosition.getRideID());
                              break;
                             case "X":
-                                Model.getInstance().removeRide(rideInPosition.getRideID(), new Model.updateListener() {
-                                    @Override
-                                    public void onUpdate() {
-                                        listData.clear();
-                                        getRides();
-                                        ridesAdapter.notifyDataSetChanged();
-                                    }
-                                });
+                                Model.getInstance().removeRide(rideInPosition.getRideID());
                                 break;
 
                         }
-
                     }
                 });
 
@@ -211,6 +193,12 @@ public class RidesListFragment extends Fragment {
             holder.plusButton.setTag(position);
 
             return convertView;
+        }
+
+        public void updateRides()
+        {
+            listData.clear();
+            getRides();
         }
 
         class ViewHolder
