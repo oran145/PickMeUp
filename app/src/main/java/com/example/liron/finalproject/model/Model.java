@@ -3,6 +3,8 @@ package com.example.liron.finalproject.model;
 import android.app.Activity;
 import android.content.Context;
 
+import java.util.ArrayList;
+
 /**
  * Created by liron on 25-Jul-17.
  */
@@ -121,8 +123,7 @@ public class Model {
 
     public interface GetAllRidesListener
     {
-        void onComplete(Ride ride);
-        void onChange();
+        void onComplete(ArrayList<Ride> ridesList);
         Context getAppContext();
         void showProgressBar();
         void hideProgressBar();

@@ -60,9 +60,10 @@ public class RidesListFragment extends Fragment {
     private void getRides() {
         Model.getInstance().getAllRidesRemote(new Model.GetAllRidesListener()
         {
-            public void onComplete(Ride ride)
+            @Override
+            public void onComplete(ArrayList<Ride> ridesList)
             {
-                ridesAdapter.add(ride);
+                ridesAdapter.add(ridesList);
             }
             @Override
             public void onChange() {
@@ -214,12 +215,12 @@ public class RidesListFragment extends Fragment {
             TextView to;
         }
 
-        public void add(Ride ride)
-        {
-            listData.add(ride);
-            this.notifyDataSetChanged();
 
-            //test
+        public void add(ArrayList<Ride> rides)
+        {
+            listData = rides;
+            this.notifyDataSetChanged();
         }
+
     }
 }

@@ -3,7 +3,6 @@ package com.example.liron.finalproject.model;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.support.annotation.NonNull;
-import android.util.Log;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.animation.GlideAnimation;
@@ -396,79 +395,62 @@ public class ModelFirebase {
     }
 
 
-    public void getAllRides(final Model.GetAllRidesListener listener) {
-//        listener.showProgressBar();
-
+    public void getAllRides(final Model.GetAllRidesListener listener)
+    {
         DatabaseReference myRef = database.getReference("ride");
-        myRef.addChildEventListener(new ChildEventListener() {
-            @Override
-            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
 
+        myRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot)
+            {
                 if (dataSnapshot.exists())
                 {
-                    //getting one ride
-                    final Ride ride = new Ride();
+                    ArrayList<Ride> myList = new ArrayList<Ride>();
 
-                    User currentuser = new User();
-                    currentuser.setUserID(dataSnapshot.child("rideOwner").child("userID").getValue().toString());
-                    currentuser.setImageUrl(dataSnapshot.child("rideOwner").child("imageUrl").getValue().toString());
-                    currentuser.setFirstName(dataSnapshot.child("rideOwner").child("firstName").getValue().toString());
-                    currentuser.setLastName(dataSnapshot.child("rideOwner").child("lastName").getValue().toString());
-                    currentuser.setBirthday((long)dataSnapshot.child("rideOwner").child("birthday").getValue());
+                    for ( DataSnapshot snap : dataSnapshot.getChildren())
+                    {
+                        final Ride ride = new Ride();
 
-                    ride.setRideOwner(currentuser);
-                    ride.setDate((long)dataSnapshot.child("rideDate").getValue());
-                    ride.setTime((long)dataSnapshot.child("rideTime").getValue());
-                    ride.setFrom(dataSnapshot.child("from").getValue().toString());
-                    ride.setTo(dataSnapshot.child("to").getValue().toString());
-                    ride.setFreeSeats((long)dataSnapshot.child("freeSeats").getValue());
-                    ride.setRideID(dataSnapshot.child("rideID").getValue().toString());
-                    ride.setHitchhikers((ArrayList<String>)dataSnapshot.child("hitchhikers").getValue());
+                        User currentuser = new User();
+                        currentuser.setUserID(snap.child("rideOwner").child("userID").getValue().toString());
+                        currentuser.setImageUrl(snap.child("rideOwner").child("imageUrl").getValue().toString());
+                        currentuser.setFirstName(snap.child("rideOwner").child("firstName").getValue().toString());
+                        currentuser.setLastName(snap.child("rideOwner").child("lastName").getValue().toString());
+                        currentuser.setBirthday((long)snap.child("rideOwner").child("birthday").getValue());
 
-                    String absoluteImageName = dataSnapshot.child("rideOwner").child("imageUrl").getValue().toString();
+                        ride.setRideOwner(currentuser);
+                        ride.setDate((long)snap.child("rideDate").getValue());
+                        ride.setTime((long)snap.child("rideTime").getValue());
+                        ride.setFrom(snap.child("from").getValue().toString());
+                        ride.setTo(snap.child("to").getValue().toString());
+                        ride.setFreeSeats((long)snap.child("freeSeats").getValue());
+                        ride.setRideID(snap.child("rideID").getValue().toString());
+                        ride.setHitchhikers((ArrayList<String>)snap.child("hitchhikers").getValue());
 
-                    String imageName = absoluteImageName.substring(absoluteImageName.indexOf(ride.getRideOwner().getUserID()), absoluteImageName.indexOf("?"));
-                    ride.getRideOwner().setImageUrl(imageName);
+                        String absoluteImageName = snap.child("rideOwner").child("imageUrl").getValue().toString();
 
-                    Glide.with(listener.getAppContext())
-                            .load(absoluteImageName)
-                            .asBitmap()
-                            .toBytes()
-                            .centerCrop()
-                            .into(new SimpleTarget<byte[]>(60, 60) {
-                                @Override
-                                public void onResourceReady(byte[] data, GlideAnimation anim) {
+                        String imageName = absoluteImageName.substring(absoluteImageName.indexOf(ride.getRideOwner().getUserID()), absoluteImageName.indexOf("?"));
+                        ride.getRideOwner().setImageUrl(imageName);
 
-                                    Bitmap bitmap = BitmapFactory.decodeByteArray(data, 0, data.length);
-                                    ride.getRideOwner().setUserImage(bitmap);
+                        Glide.with(listener.getAppContext())
+                                .load(absoluteImageName)
+                                .asBitmap()
+                                .toBytes()
+                                .centerCrop()
+                                .into(new SimpleTarget<byte[]>(60, 60) {
+                                    @Override
+                                    public void onResourceReady(byte[] data, GlideAnimation anim)
+                                    {
 
-                                    listener.onComplete(ride);
-                                    listener.hideProgressBar();
-                                }
-                            });
+                                        Bitmap bitmap = BitmapFactory.decodeByteArray(data, 0, data.length);
+                                        ride.getRideOwner().setUserImage(bitmap);
+                                    }
+                                });
+                        myList.add(ride);
+                    }
+                    listener.onComplete(myList);
                 }
-                else
-                {
-                    Log.d("bla", "doesn't found");
-//                    listener.hideProgressBar();
-                }
-
             }
-            @Override
-            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-                listener.onChange();
-            }
-
-            @Override
-            public void onChildRemoved(DataSnapshot dataSnapshot) {
-                listener.onChange();
-            }
-
-            @Override
-            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
-            }
-
             @Override
             public void onCancelled(DatabaseError databaseError) {
 
