@@ -3,6 +3,8 @@ package com.example.liron.finalproject.model;
 import android.app.Activity;
 import android.content.Context;
 
+import java.util.ArrayList;
+
 /**
  * Created by liron on 25-Jul-17.
  */
@@ -19,28 +21,23 @@ public class Model {
         return instance;
     }
 
-    public void addHitchhiker(String rideID,updateListener listener)
+    public void addHitchhiker(String rideID)
     {
-        modelFirebase.addHitchhiker(rideID,listener);
+        modelFirebase.addHitchhiker(rideID);
     }
 
     public String getCurrentUserId() {
         return modelFirebase.getCurrentUserId();
     }
 
-    public void removeHitchhiker(String rideID, updateListener updateListener)
+    public void removeHitchhiker(String rideID)
     {
-        modelFirebase.removeHitchhiker( rideID, updateListener);
+        modelFirebase.removeHitchhiker( rideID);
     }
 
-    public void removeRide(String rideID, updateListener updateListener)
+    public void removeRide(String rideID)
     {
-        modelFirebase.removeRide(rideID, updateListener);
-    }
-
-    public  interface updateListener
-    {
-        void onUpdate();
+        modelFirebase.removeRide(rideID);
     }
 
     public interface LoginListener{
@@ -126,7 +123,7 @@ public class Model {
 
     public interface GetAllRidesListener
     {
-        void onComplete(Ride ride);
+        void onComplete(ArrayList<Ride> ridesList);
         Context getAppContext();
         void showProgressBar();
         void hideProgressBar();
