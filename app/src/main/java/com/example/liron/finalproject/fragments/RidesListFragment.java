@@ -65,11 +65,7 @@ public class RidesListFragment extends Fragment {
             {
                 ridesAdapter.add(ridesList);
             }
-            @Override
-            public void onChange() {
-                ridesAdapter.updateRides();
-            }
-
+          
             public Context getAppContext() {
                 return MyAppContext.getAppContext();
             }
