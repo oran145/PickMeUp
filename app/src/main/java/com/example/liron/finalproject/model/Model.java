@@ -24,6 +24,10 @@ public class Model {
         modelFirebase.addHitchhiker(rideID,listener);
     }
 
+    public String getCurrentUserId() {
+        return modelFirebase.getCurrentUserId();
+    }
+
     public  interface updateListener
     {
         void onUpdate();

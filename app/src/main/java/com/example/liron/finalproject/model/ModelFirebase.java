@@ -500,4 +500,7 @@ public class ModelFirebase {
     }
 
 
+    public String getCurrentUserId() {
+        return mAuth.getCurrentUser().getUid();
+    }
 }

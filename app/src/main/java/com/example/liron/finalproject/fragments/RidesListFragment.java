@@ -151,6 +151,18 @@ public class RidesListFragment extends Fragment {
 
             Ride rideInPosition = (Ride) listData.get(position);
 
+            String currentUserId = Model.getInstance().getCurrentUserId();
+
+            if(currentUserId.equals(rideInPosition.getRideOwner().getUserID()))
+            {
+                holder.plusButton.setVisibility(View.INVISIBLE);
+                //turn to edit
+            }
+            else if( rideInPosition.getHitchhikers().contains(currentUserId))
+                {
+                    holder.plusButton.setText("-");
+                }
+
             holder.firstName.setText(rideInPosition.getRideOwner().getFirstName());
             holder.lastName.setText(rideInPosition.getRideOwner().getLastName());
             holder.contactImage.setImageBitmap(rideInPosition.getRideOwner().getUserImage());
