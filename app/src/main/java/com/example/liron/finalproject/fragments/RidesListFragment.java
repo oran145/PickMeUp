@@ -126,14 +126,47 @@ public class RidesListFragment extends Fragment {
                     {
                         int pos = (int) v.getTag();
                         Ride rideInPosition = (Ride) listData.get(pos);
-                        Model.getInstance().addHitchhiker(rideInPosition.getRideID(), new Model.updateListener() {
-                            @Override
-                            public void onUpdate() {
-                                listData.clear();
-                                getRides();
-                                ridesAdapter.notifyDataSetChanged();
-                            }
-                        });
+
+
+                        Button plusButton = (Button)v.findViewById(R.id.list_row_ride_plus_button);
+                        String buttonText = plusButton.getText().toString();
+
+                        switch (buttonText)
+                        {
+                            case "+":
+                                Model.getInstance().addHitchhiker(rideInPosition.getRideID(), new Model.updateListener() {
+                                    @Override
+                                    public void onUpdate() {
+                                        listData.clear();
+                                        getRides();
+                                        ridesAdapter.notifyDataSetChanged();
+                                    }
+                                });
+                            break;
+
+                            case "-":
+                                Model.getInstance().removeHitchhiker(rideInPosition.getRideID(), new Model.updateListener() {
+                                    @Override
+                                    public void onUpdate() {
+                                        listData.clear();
+                                        getRides();
+                                        ridesAdapter.notifyDataSetChanged();
+                                    }
+                                });
+                             break;
+                            case "X":
+                                Model.getInstance().removeRide(rideInPosition.getRideID(), new Model.updateListener() {
+                                    @Override
+                                    public void onUpdate() {
+                                        listData.clear();
+                                        getRides();
+                                        ridesAdapter.notifyDataSetChanged();
+                                    }
+                                });
+                                break;
+
+                        }
+
                     }
                 });
 
@@ -155,12 +188,16 @@ public class RidesListFragment extends Fragment {
 
             if(currentUserId.equals(rideInPosition.getRideOwner().getUserID()))
             {
-                holder.plusButton.setVisibility(View.INVISIBLE);
-                //turn to edit
+                holder.plusButton.setText("X");
+
             }
             else if( rideInPosition.getHitchhikers().contains(currentUserId))
+            {
+                holder.plusButton.setText("-");
+            }
+                else if(rideInPosition.getFreeSeats() == 0)
                 {
-                    holder.plusButton.setText("-");
+                    holder.plusButton.setVisibility(View.INVISIBLE);
                 }
 
             holder.firstName.setText(rideInPosition.getRideOwner().getFirstName());

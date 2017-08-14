@@ -503,4 +503,33 @@ public class ModelFirebase {
     public String getCurrentUserId() {
         return mAuth.getCurrentUser().getUid();
     }
+
+    public void removeHitchhiker(String rideID, final Model.updateListener updateListener)
+    {
+        DatabaseReference myRef = database.getReference("ride").child(rideID);
+
+        myRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot)
+            {
+                long freeSteats = (long) dataSnapshot.child("freeSeats").getValue();
+                freeSteats++;
+                dataSnapshot.child("freeSeats").getRef().setValue(freeSteats);
+                ArrayList<String> hitchhikers = (ArrayList<String>) dataSnapshot.child("hitchhikers").getValue();
+                hitchhikers.remove(mAuth.getCurrentUser().getUid());
+                dataSnapshot.child("hitchhikers").getRef().setValue(hitchhikers);
+                updateListener.onUpdate();
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    public void removeRide(String rideID, final Model.updateListener updateListener)
+    {
+        database.getReference("ride").child(rideID).removeValue();
+        updateListener.onUpdate();
+    }
 }

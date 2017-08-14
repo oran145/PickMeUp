@@ -28,6 +28,16 @@ public class Model {
         return modelFirebase.getCurrentUserId();
     }
 
+    public void removeHitchhiker(String rideID, updateListener updateListener)
+    {
+        modelFirebase.removeHitchhiker( rideID, updateListener);
+    }
+
+    public void removeRide(String rideID, updateListener updateListener)
+    {
+        modelFirebase.removeRide(rideID, updateListener);
+    }
+
     public  interface updateListener
     {
         void onUpdate();
