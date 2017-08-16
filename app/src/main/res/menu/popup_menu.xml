@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+    <item
+        android:id="@+id/subscribe"
+        android:title="subscribe to ride" />
+    <item
+        android:id="@+id/unsubscribe"
+        android:title="unsubscribe to ride" />
+
+    <item
+        android:id="@+id/delete"
+        android:title="delete ride" />
+
+</menu>

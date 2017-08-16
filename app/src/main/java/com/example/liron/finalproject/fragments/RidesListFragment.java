@@ -5,12 +5,15 @@ import android.app.Fragment;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.PopupMenu;
 import android.widget.TextView;
 
 import com.example.liron.finalproject.MyAppContext;
@@ -122,7 +125,7 @@ public class RidesListFragment extends Fragment {
                 holder.freeSeats = (TextView) convertView.findViewById(R.id.list_row_ride_hitchhiker_textView);
                 holder.from = (TextView) convertView.findViewById(R.id.list_row_ride_from_textView);
                 holder.to = (TextView) convertView.findViewById(R.id.list_row_ride_to_textView);
-                holder.plusButton = (Button)  convertView.findViewById(R.id.list_row_ride_plus_button);
+                holder.plusButton = (Button) convertView.findViewById(R.id.list_row_ride_plus_button);
                 holder.plusButton.setTag(position);
                 convertView.setTag(holder);
             }
@@ -140,19 +143,6 @@ public class RidesListFragment extends Fragment {
             Ride rideInPosition = (Ride) listData.get(position);
 
 
-            if(currentUserId.equals(rideInPosition.getRideOwner().getUserID()))
-            {
-                holder.plusButton.setText("X");
-
-            }
-            else if( rideInPosition.getHitchhikers().contains(currentUserId))
-            {
-                holder.plusButton.setText("-");
-            }
-                else if(rideInPosition.getFreeSeats() == 0)
-                {
-                    holder.plusButton.setVisibility(View.INVISIBLE);
-                }
 
             holder.firstName.setText(rideInPosition.getRideOwner().getFirstName());
             holder.lastName.setText(rideInPosition.getRideOwner().getLastName());
@@ -167,25 +157,70 @@ public class RidesListFragment extends Fragment {
                 @Override
                 public void onClick(View v)
                 {
-                    int pos = (int) v.getTag();
-                    Ride rideInPosition = (Ride) listData.get(pos);
+                    switch (v.getId()) {
+                        case R.id.list_row_ride_plus_button:
+
+                            int pos = (Integer) v.getTag();
+                            final Ride tempRide = (Ride) listData.get(pos);
+
+                            PopupMenu popup = new PopupMenu(MyAppContext.getAppContext(), v);
+                            popup.getMenuInflater().inflate(R.menu.popup_menu,popup.getMenu());
+
+                            Menu myMenu = popup.getMenu();
+                            if(currentUserId.equals(tempRide.getRideOwner().getUserID()))
+                            {
+                                myMenu.findItem(R.id.unsubscribe).setEnabled(false);
+                                myMenu.findItem(R.id.subscribe).setEnabled(false);
+                            }
+                            else if( tempRide.getHitchhikers().contains(currentUserId))
+                            {
+                                myMenu.findItem(R.id.subscribe).setEnabled(false);
+                                myMenu.findItem(R.id.delete).setEnabled(false);
+                            }
+                            else if(tempRide.getFreeSeats() == 0)
+                            {
+                                myMenu.findItem(R.id.subscribe).setEnabled(false);
+                                myMenu.findItem(R.id.delete).setEnabled(false);
+                                myMenu.findItem(R.id.unsubscribe).setEnabled(false);
+                            }
 
 
-                    Button plusButton = (Button)v.findViewById(R.id.list_row_ride_plus_button);
-                    String buttonText = plusButton.getText().toString();
+                            popup.show();
+                            popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                                @Override
+                                public boolean onMenuItemClick(MenuItem item)
+                                {
 
-                    switch (buttonText)
-                    {
-                        case "+":
-                            Model.getInstance().addHitchhiker(rideInPosition.getRideID());
+                                    switch (item.getItemId())
+                                    {
+                                        case R.id.subscribe:
+
+                                            Model.getInstance().addHitchhiker(tempRide.getRideID());
+
+                                            break;
+
+                                        case R.id.unsubscribe:
+                                            Model.getInstance().removeHitchhiker(tempRide.getRideID());
+
+                                            break;
+
+                                        case R.id.delete:
+
+                                            Model.getInstance().removeRide(tempRide.getRideID());
+                                            break;
+
+                                        default:
+                                            break;
+                                    }
+
+                                    return true;
+                                }
+                            });
+
                             break;
-                        case "-":
-                            Model.getInstance().removeHitchhiker(rideInPosition.getRideID());
-                            break;
-                        case "X":
-                            Model.getInstance().removeRide(rideInPosition.getRideID());
-                            break;
 
+                        default:
+                            break;
                     }
                 }
             });
