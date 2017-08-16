@@ -7,7 +7,9 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
+import com.example.liron.finalproject.Dialogs.DateDialogFragment;
 import com.example.liron.finalproject.Dialogs.MyProgressBar;
+import com.example.liron.finalproject.Dialogs.TimeDialohFragment;
 import com.example.liron.finalproject.fragments.AddRideFragment;
 import com.example.liron.finalproject.fragments.RidesListFragment;
 import com.example.liron.finalproject.model.Model;
@@ -54,6 +56,31 @@ public class PickMeAppActivity extends Activity {
                 ftr.replace(R.id.pickMeUp_container, ridesListFragment);
                 ftr.addToBackStack("addRide");
                 ftr.commit();
+            }
+
+            @Override
+            public void onDateSet() {
+                DateDialogFragment dialog = new DateDialogFragment();
+                dialog.setOnDateSetListener(new DateDialogFragment.OnDateSetLisetener() {
+                    @Override
+                    public void onDateSet(int year, int monthOfYear, int dayOfMonth) {
+                        addRideFragment.setTextInDate("" + dayOfMonth + "/" + monthOfYear + "/" + year);
+                    }
+                });
+                dialog.show(getFragmentManager(),"TAG");
+            }
+
+            @Override
+            public void onTimeSet() {
+                TimeDialohFragment dialog = new TimeDialohFragment();
+                dialog.setOnTimeSetListener(new TimeDialohFragment.OnTimeSetListener() {
+
+                    @Override
+                    public void onTimeSet(int hour, int minute) {
+                        addRideFragment.setTextInTime("" + hour + ":" + minute);
+                    }
+                });
+                dialog.show(getFragmentManager(),"TAG");
             }
         });
 

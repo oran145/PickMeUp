@@ -10,14 +10,14 @@ public class Ride {
 
     private String rideID;
     private User rideOwner;
-    private long date;
-    private long time;
+    private String date;
+    private String time;
     private String from;
     private String to;
     private long freeSeats;
     private ArrayList<String> hitchhikers;
 
-    public Ride(String rideID, User rideOwner, long date, long time, String from, String to, int freeSeats, ArrayList<String> hitchhikers) {
+    public Ride(String rideID, User rideOwner, String date, String time, String from, String to, int freeSeats, ArrayList<String> hitchhikers) {
         this.rideID = rideID;
         this.rideOwner = rideOwner;
         this.date = date;
@@ -46,19 +46,19 @@ public class Ride {
         this.rideOwner = rideOwner;
     }
 
-    public long getDate() {
+    public String getDate() {
         return date;
     }
 
-    public void setDate(long date) {
+    public void setDate(String date) {
         this.date = date;
     }
 
-    public long getTime() {
+    public String getTime() {
         return time;
     }
 
-    public void setTime(long time) {
+    public void setTime(String time) {
         this.time = time;
     }
 

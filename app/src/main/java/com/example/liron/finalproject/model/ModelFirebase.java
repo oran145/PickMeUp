@@ -419,8 +419,8 @@ public class ModelFirebase {
                         currentuser.setBirthday((long)snap.child("rideOwner").child("birthday").getValue());
 
                         ride.setRideOwner(currentuser);
-                        ride.setDate((long)snap.child("rideDate").getValue());
-                        ride.setTime((long)snap.child("rideTime").getValue());
+                        ride.setDate((String) snap.child("rideDate").getValue());
+                        ride.setTime((String)snap.child("rideTime").getValue());
                         ride.setFrom(snap.child("from").getValue().toString());
                         ride.setTo(snap.child("to").getValue().toString());
                         ride.setFreeSeats((long)snap.child("freeSeats").getValue());

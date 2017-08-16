@@ -91,7 +91,7 @@
                 android:id="@+id/list_row_ride_time_textView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="20:00"/>
+                />
 
         </LinearLayout>
         <LinearLayout
@@ -106,7 +106,7 @@
                 android:id="@+id/list_row_ride_from_textView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="ramat gan"/>
+                />
 
         </LinearLayout>
         <LinearLayout

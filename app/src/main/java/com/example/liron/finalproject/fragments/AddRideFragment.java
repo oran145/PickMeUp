@@ -4,6 +4,7 @@ package com.example.liron.finalproject.fragments;
 import android.app.Fragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -24,8 +25,19 @@ public class AddRideFragment extends Fragment {
     private EditText hitchhiker;
     private Button save;
 
+
+
+    public void setTextInDate(String s) {
+        date.setText(s);
+    }
+
+    public void setTextInTime(String s) { time.setText(s);}
+
+
     public interface Delegate{
         void saveRide(Ride r);
+        void onDateSet();
+        void onTimeSet();
     }
 
     Delegate delegate;
@@ -48,20 +60,47 @@ public class AddRideFragment extends Fragment {
         time = (EditText)view.findViewById(R.id.ride_time);
         hitchhiker = (EditText)view.findViewById(R.id.ride_hitchhiker);
         save =(Button)view.findViewById(R.id.fragment_addRide_save_btn);
+
+
+
         save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-        //final long dateLong = utilities.convertDateStringToMillis(date.getText().toString());
-        //final long timeLong = utilities.convertDateStringToMillis(time.getText().toString());
-                Ride r=new Ride(null,null,1,2,from.getText().toString(),to.getText().toString(),Integer.parseInt( hitchhiker.getText().toString()),null);
+                //final long dateLong = utilities.convertDateStringToMillis(date.getText().toString());
+                //final long timeLong = utilities.convertDateStringToMillis(time.getText().toString());
+                Ride r=new Ride(null,null,date.getText().toString(),time.getText().toString() ,from.getText().toString(),to.getText().toString(),Integer.parseInt( hitchhiker.getText().toString()),null);
 
 
                 delegate.saveRide(r);
             }
         });
 
+        date.setInputType(0);
+        date.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                if (motionEvent.getAction() == MotionEvent.ACTION_DOWN){
+                    delegate.onDateSet();
+                }
+                return true;
+            }
+        });
+
+
+        time.setInputType(0);
+        time.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                if (motionEvent.getAction() == MotionEvent.ACTION_DOWN){
+                    delegate.onTimeSet();
+                }
+                return true;
+            }
+        });
+
 
         return view;
     }
+
 
 }
