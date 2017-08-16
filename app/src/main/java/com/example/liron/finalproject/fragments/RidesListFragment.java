@@ -26,6 +26,7 @@ import java.util.Objects;
 public class RidesListFragment extends Fragment {
 
     RidesListAdapter ridesAdapter;
+    String currentUserId;
 
     public interface Delegate{
         void onItemClick(User user);
@@ -44,7 +45,7 @@ public class RidesListFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_rides_list, container, false);
-
+        currentUserId = Model.getInstance().getCurrentUserId();
         ArrayList<Ride> data = new ArrayList<Ride>();
 
         final ListView listView = (ListView) view.findViewById(R.id.fragment_all_rides_list);
@@ -138,7 +139,6 @@ public class RidesListFragment extends Fragment {
 
             Ride rideInPosition = (Ride) listData.get(position);
 
-            String currentUserId = Model.getInstance().getCurrentUserId();
 
             if(currentUserId.equals(rideInPosition.getRideOwner().getUserID()))
             {
@@ -162,7 +162,7 @@ public class RidesListFragment extends Fragment {
             holder.freeSeats.setText(Objects.toString(rideInPosition.getFreeSeats(),null));
             holder.from.setText(rideInPosition.getFrom());
             holder.to.setText(rideInPosition.getTo());
-            
+
             holder.plusButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v)
