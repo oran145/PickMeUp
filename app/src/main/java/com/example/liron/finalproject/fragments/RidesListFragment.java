@@ -109,7 +109,8 @@ public class RidesListFragment extends Fragment {
 
         public View getView(int position, View convertView, ViewGroup parent) {
             ViewHolder holder;
-            if (convertView == null) {
+            if (convertView == null)
+            {
                 convertView = layoutInflater.inflate(R.layout.list_row, null);
                 holder = new ViewHolder();
                 holder.contactImage = (ImageView) convertView.findViewById(R.id.list_row_contactImage_imageView);
@@ -121,6 +122,12 @@ public class RidesListFragment extends Fragment {
                 holder.from = (TextView) convertView.findViewById(R.id.list_row_ride_from_textView);
                 holder.to = (TextView) convertView.findViewById(R.id.list_row_ride_to_textView);
                 holder.plusButton = (Button)  convertView.findViewById(R.id.list_row_ride_plus_button);
+                holder.plusButton.setTag(position);
+                convertView.setTag(holder);
+            }
+            else
+            {
+                holder = (ViewHolder) convertView.getTag();
 
                 holder.plusButton.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -137,10 +144,10 @@ public class RidesListFragment extends Fragment {
                         {
                             case "+":
                                 Model.getInstance().addHitchhiker(rideInPosition.getRideID());
-                            break;
+                                break;
                             case "-":
                                 Model.getInstance().removeHitchhiker(rideInPosition.getRideID());
-                             break;
+                                break;
                             case "X":
                                 Model.getInstance().removeRide(rideInPosition.getRideID());
                                 break;
@@ -148,12 +155,6 @@ public class RidesListFragment extends Fragment {
                         }
                     }
                 });
-
-                convertView.setTag(holder);
-            }
-            else
-            {
-                holder = (ViewHolder) convertView.getTag();
             }
 
             if (listData == null)
@@ -187,7 +188,7 @@ public class RidesListFragment extends Fragment {
             holder.freeSeats.setText(Objects.toString(rideInPosition.getFreeSeats(),null));
             holder.from.setText(rideInPosition.getFrom());
             holder.to.setText(rideInPosition.getTo());
-            holder.plusButton.setTag(position);
+
 
             return convertView;
         }
