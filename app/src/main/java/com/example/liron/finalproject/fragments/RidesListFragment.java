@@ -10,7 +10,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.PopupMenu;
@@ -89,6 +89,7 @@ public class RidesListFragment extends Fragment {
     {
         private ArrayList listData;
         private LayoutInflater layoutInflater;
+        ViewHolder holder;
 
         public RidesListAdapter(Context context, ArrayList listData)
         {
@@ -112,7 +113,6 @@ public class RidesListFragment extends Fragment {
         }
 
         public View getView(int position, View convertView, ViewGroup parent) {
-            ViewHolder holder;
             if (convertView == null)
             {
                 convertView = layoutInflater.inflate(R.layout.list_row, null);
@@ -125,8 +125,7 @@ public class RidesListFragment extends Fragment {
                 holder.freeSeats = (TextView) convertView.findViewById(R.id.list_row_ride_hitchhiker_textView);
                 holder.from = (TextView) convertView.findViewById(R.id.list_row_ride_from_textView);
                 holder.to = (TextView) convertView.findViewById(R.id.list_row_ride_to_textView);
-                holder.plusButton = (Button) convertView.findViewById(R.id.list_row_ride_plus_button);
-                holder.plusButton.setTag(position);
+                holder.plusButton = (ImageButton) convertView.findViewById(R.id.list_row_ride_plus_button);
                 convertView.setTag(holder);
             }
             else
@@ -152,6 +151,7 @@ public class RidesListFragment extends Fragment {
             holder.freeSeats.setText(Objects.toString(rideInPosition.getFreeSeats(),null));
             holder.from.setText(rideInPosition.getFrom());
             holder.to.setText(rideInPosition.getTo());
+            holder.plusButton.setTag(position);
 
             holder.plusButton.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -180,6 +180,11 @@ public class RidesListFragment extends Fragment {
                             else if(tempRide.getFreeSeats() == 0)
                             {
                                 myMenu.findItem(R.id.subscribe).setEnabled(false);
+                                myMenu.findItem(R.id.delete).setEnabled(false);
+                                myMenu.findItem(R.id.unsubscribe).setEnabled(false);
+                            }
+                            else
+                            {
                                 myMenu.findItem(R.id.delete).setEnabled(false);
                                 myMenu.findItem(R.id.unsubscribe).setEnabled(false);
                             }
@@ -225,20 +230,13 @@ public class RidesListFragment extends Fragment {
                 }
             });
 
-
             return convertView;
-        }
-
-        public void updateRides()
-        {
-            listData.clear();
-            getRides();
         }
 
         class ViewHolder
         {
             ImageView contactImage;
-            Button plusButton;
+            ImageButton plusButton;
             TextView firstName;
             TextView lastName;
             TextView rideId;
