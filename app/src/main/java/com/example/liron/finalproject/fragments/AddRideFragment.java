@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.NumberPicker;
 
 import com.example.liron.finalproject.R;
 import com.example.liron.finalproject.model.Ride;
@@ -22,9 +23,9 @@ public class AddRideFragment extends Fragment {
     private EditText to;
     private EditText date;
     private EditText time;
-    private EditText hitchhiker;
+    private NumberPicker hitchhiker;
     private Button save;
-
+    private int hitchhikerNumber;
 
 
     public void setTextInDate(String s) {
@@ -58,9 +59,18 @@ public class AddRideFragment extends Fragment {
         to = (EditText)view.findViewById(R.id.ride_to);
         date = (EditText)view.findViewById(R.id.ride_date);
         time = (EditText)view.findViewById(R.id.ride_time);
-        hitchhiker = (EditText)view.findViewById(R.id.ride_hitchhiker);
+        hitchhiker = (NumberPicker)view.findViewById(R.id.ride_hitchhiker);
         save =(Button)view.findViewById(R.id.fragment_addRide_save_btn);
 
+        hitchhiker.setMinValue(1);
+        hitchhiker.setMaxValue(15);
+
+        hitchhiker.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
+            @Override
+            public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
+                hitchhikerNumber = newVal;
+            }
+        });
 
 
         save.setOnClickListener(new View.OnClickListener() {
@@ -68,7 +78,7 @@ public class AddRideFragment extends Fragment {
             public void onClick(View v) {
                 //final long dateLong = utilities.convertDateStringToMillis(date.getText().toString());
                 //final long timeLong = utilities.convertDateStringToMillis(time.getText().toString());
-                Ride r=new Ride(null,null,date.getText().toString(),time.getText().toString() ,from.getText().toString(),to.getText().toString(),Integer.parseInt( hitchhiker.getText().toString()),null);
+                Ride r=new Ride(null,null,date.getText().toString(),time.getText().toString() ,from.getText().toString(),to.getText().toString(),hitchhikerNumber,null);
 
 
                 delegate.saveRide(r);
