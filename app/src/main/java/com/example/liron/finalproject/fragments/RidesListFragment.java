@@ -129,32 +129,6 @@ public class RidesListFragment extends Fragment {
             {
                 holder = (ViewHolder) convertView.getTag();
 
-                holder.plusButton.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v)
-                    {
-                        int pos = (int) v.getTag();
-                        Ride rideInPosition = (Ride) listData.get(pos);
-
-
-                        Button plusButton = (Button)v.findViewById(R.id.list_row_ride_plus_button);
-                        String buttonText = plusButton.getText().toString();
-
-                        switch (buttonText)
-                        {
-                            case "+":
-                                Model.getInstance().addHitchhiker(rideInPosition.getRideID());
-                                break;
-                            case "-":
-                                Model.getInstance().removeHitchhiker(rideInPosition.getRideID());
-                                break;
-                            case "X":
-                                Model.getInstance().removeRide(rideInPosition.getRideID());
-                                break;
-
-                        }
-                    }
-                });
             }
 
             if (listData == null)
@@ -188,6 +162,33 @@ public class RidesListFragment extends Fragment {
             holder.freeSeats.setText(Objects.toString(rideInPosition.getFreeSeats(),null));
             holder.from.setText(rideInPosition.getFrom());
             holder.to.setText(rideInPosition.getTo());
+            
+            holder.plusButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v)
+                {
+                    int pos = (int) v.getTag();
+                    Ride rideInPosition = (Ride) listData.get(pos);
+
+
+                    Button plusButton = (Button)v.findViewById(R.id.list_row_ride_plus_button);
+                    String buttonText = plusButton.getText().toString();
+
+                    switch (buttonText)
+                    {
+                        case "+":
+                            Model.getInstance().addHitchhiker(rideInPosition.getRideID());
+                            break;
+                        case "-":
+                            Model.getInstance().removeHitchhiker(rideInPosition.getRideID());
+                            break;
+                        case "X":
+                            Model.getInstance().removeRide(rideInPosition.getRideID());
+                            break;
+
+                    }
+                }
+            });
 
 
             return convertView;
