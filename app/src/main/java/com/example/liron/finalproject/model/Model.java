@@ -11,7 +11,7 @@ import java.util.ArrayList;
 
 public class Model {
     ModelFirebase modelFirebase=new ModelFirebase();
-    //ModelSql modelSql=new ModelSql();
+    ModelSql modelSql = new ModelSql();
 
     final private static Model instance = new Model();
     private Model() {}
@@ -129,15 +129,61 @@ public class Model {
         void hideProgressBar();
     }
 
+    public interface GetAllUsersListener
+    {
+        void onComplete(ArrayList<User> usersList);
+        Context getAppContext();
+        void showProgressBar();
+    }
+
     public interface SaveRideListener
     {
         void showProgressBar();
         void hideProgressBar();
     }
 
-    public void getAllRidesRemote(GetAllRidesListener listener)
+    public void getAllRidesRemote(final GetAllRidesListener listener)
     {
-        modelFirebase.getAllRides(listener);
+        modelFirebase.getAllUsers(new GetAllUsersListener() {
+            @Override
+            public void onComplete(ArrayList<User> usersList)
+            {
+                modelSql.writeUsersFromFireBase(usersList);
+                modelFirebase.getAllRides(new GetAllRidesListener() {
+                    @Override
+                    public void onComplete(ArrayList<Ride> ridesList)
+                    {
+                        modelSql.writeDataFromFireBase(ridesList,listener);
+                    }
+                    @Override
+                    public Context getAppContext() {
+                        return listener.getAppContext();
+                    }
+
+                    @Override
+                    public void showProgressBar() {
+                        listener.showProgressBar();
+                    }
+
+                    @Override
+                    public void hideProgressBar() {
+                        listener.hideProgressBar();
+                    }
+                });
+
+            }
+
+            @Override
+            public Context getAppContext() {
+                return listener.getAppContext();
+            }
+
+            @Override
+            public void showProgressBar() {
+                listener.showProgressBar();
+            }
+
+        });
     }
 
     public void addUser(User user, final LoginListener listener)
@@ -203,5 +249,6 @@ public class Model {
     {
         modelFirebase.addRide(r,saveRideListener);
     }
+
 
 }

@@ -344,7 +344,7 @@ public class ModelFirebase {
 
     public void addRide(final Ride ride, final Model.SaveRideListener saveListener)
     {
-
+        saveListener.showProgressBar();
         String ownerId = mAuth.getCurrentUser().getUid();
 
         database.getReference("users").child(ownerId).addListenerForSingleValueEvent(new ValueEventListener() {
@@ -393,6 +393,62 @@ public class ModelFirebase {
         myRef.setValue(result);
 
     }
+
+
+    public void getAllUsers(final Model.GetAllUsersListener listener)
+    {
+        listener.showProgressBar();
+
+        DatabaseReference myRef = database.getReference("users");
+        myRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot)
+            {
+                if (dataSnapshot.exists())
+                {
+                    ArrayList<User> myList = new ArrayList<User>();
+
+                    for ( DataSnapshot snap : dataSnapshot.getChildren())
+                    {
+
+                        final User user = new User();
+                        user.setUserID(snap.child("id").getValue().toString());
+                        user.setFirstName(snap.child("firstName").getValue().toString());
+                        user.setLastName(snap.child("lastName").getValue().toString());
+                        user.setBirthday((long) snap.child("birthday").getValue());
+
+                        String absoluteImageUrl = snap.child("imageUrl").getValue().toString();
+
+                        String imageName = absoluteImageUrl.substring(absoluteImageUrl.indexOf(user.getUserID()), absoluteImageUrl.indexOf("?"));
+                        user.setImageUrl(imageName);
+
+                        Glide.with(listener.getAppContext())
+                                .load(absoluteImageUrl)
+                                .asBitmap()
+                                .toBytes()
+                                .centerCrop()
+                                .into(new SimpleTarget<byte[]>(60, 60) {
+                                    @Override
+                                    public void onResourceReady(byte[] data, GlideAnimation anim) {
+
+                                        Bitmap bitmap = BitmapFactory.decodeByteArray(data, 0, data.length);
+                                        user.setUserImage(bitmap);
+
+                                    }
+                                });
+                        myList.add(user);
+                    }
+                    listener.onComplete(myList);
+                }
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+
+        });
+    }
+
 
 
     public void getAllRides(final Model.GetAllRidesListener listener)

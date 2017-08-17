@@ -61,7 +61,8 @@ public class RidesListFragment extends Fragment {
         return view;
     }
 
-    private void getRides() {
+    private void getRides()
+    {
         Model.getInstance().getAllRidesRemote(new Model.GetAllRidesListener()
         {
             @Override
