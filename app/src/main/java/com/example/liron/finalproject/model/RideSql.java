@@ -90,6 +90,8 @@ class RideSql
     public static void writeDataFromFireBase(SQLiteOpenHelper helper , ArrayList<Ride> rideList,Model.GetAllRidesListener listener)
     {
         SQLiteDatabase writeableDatabase =  helper.getWritableDatabase();
+        SQLiteDatabase readableDatabase =  helper.getReadableDatabase();
+
         Date currentTime = Calendar.getInstance().getTime();
 
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
@@ -114,6 +116,16 @@ class RideSql
                 {
                     continue;
                 }
+
+                Cursor cursor = null;
+                String sql ="SELECT " + RIDE_ID + " FROM "+RIDES+" WHERE " + RIDE_ID + "='"+ride.getRideID()+"'";
+                cursor = readableDatabase.rawQuery(sql,null);
+
+                if(cursor.getCount()>0)
+                {
+                    readableDatabase.execSQL("delete from "+RIDES+" where " + RIDE_ID +" ='"+ride.getRideID()+"'");
+                }
+
 
                 ContentValues values = new ContentValues();
 
