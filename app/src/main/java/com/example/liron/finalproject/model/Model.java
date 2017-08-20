@@ -37,6 +37,7 @@ public class Model {
 
     public void removeRide(String rideID)
     {
+        modelSql.removeRide(rideID);
         modelFirebase.removeRide(rideID);
     }
 

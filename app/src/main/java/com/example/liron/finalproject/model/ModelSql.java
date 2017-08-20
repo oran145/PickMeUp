@@ -32,6 +32,11 @@ public class ModelSql {
         UserSql.writeUsersFromFireBase(helper.getWritableDatabase(),userList);
     }
 
+    public void removeRide(String rideID)
+    {
+        RideSql.removeRide(helper.getWritableDatabase(),rideID);
+    }
+
     public class Helper extends SQLiteOpenHelper
     {
         public Helper(Context context)

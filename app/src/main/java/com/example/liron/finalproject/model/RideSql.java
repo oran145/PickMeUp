@@ -46,7 +46,9 @@ class RideSql
 
     public static void getAllRides(SQLiteOpenHelper helper,Model.GetAllRidesListener listener)
     {
+
         SQLiteDatabase readableDatabase = helper.getReadableDatabase();
+
         Cursor cursor = readableDatabase.query(true,RIDES,null,null,null,null,null,null,null);
 
         ArrayList<Ride> rideList = new ArrayList<Ride>();
@@ -143,6 +145,9 @@ class RideSql
     }
 
 
-
+    public static void removeRide(SQLiteDatabase writableDatabase, String rideID)
+    {
+        writableDatabase.execSQL("delete from "+RIDES+" where " + RIDE_ID +" ='"+rideID+"'");
+    }
 }
 
