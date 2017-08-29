@@ -27,7 +27,8 @@ class UserSql
 
     private static final String USERS = "USERS";//table name
     private static final String USER_ID = "userId";//user id primary key ,get from firebase uid at athunticaton,text
-    private static final String IMAGE_URL = "imageUrl";//the image path of the saved image on the phone,text
+    private static final String IMAGE_LOCAL_URL = "imageLocalUrl";//the image path of the saved image on the phone,text
+    private static final String IMAGE_FIREBASE_URL = "imageFireBaseUrl";//the image path of the saved image on the phone,text
     private static final String FIRST_NAME = "firstName";//user first name
     private static final String LAST_NAME = "lastName";
     private static final String BIRTHDAY="birthday";
@@ -35,7 +36,7 @@ class UserSql
 
     public static void onCreate(SQLiteDatabase sqLiteDatabase) {
         sqLiteDatabase.execSQL("CREATE TABLE " + USERS + " (" + USER_ID + " TEXT PRIMARY KEY, "
-                + IMAGE_URL + " TEXT, " + FIRST_NAME + " TEXT, "+LAST_NAME+" TEXT, "+BIRTHDAY+" INTEGER)");
+                + IMAGE_LOCAL_URL + " TEXT, " + IMAGE_FIREBASE_URL + " TEXT, " + FIRST_NAME + " TEXT, "+LAST_NAME+" TEXT, "+BIRTHDAY+" INTEGER)");
     }
 
 
@@ -47,7 +48,7 @@ class UserSql
     {
         for (User user: userList)
         {
-            String absolutePathName = saveImageToFile(user.getUserImage(),user.getImageUrl());
+            String absolutePathName = saveImageToFile(user.getUserImage(),user.getImageFireBaseUrl());
             if(absolutePathName==null)
             {
                 Log.e("TAG","fail to save image");
@@ -57,7 +58,8 @@ class UserSql
             ContentValues values = new ContentValues();
 
             values.put(USER_ID, user.getUserID());
-            values.put(IMAGE_URL,absolutePathName);
+            values.put(IMAGE_LOCAL_URL,absolutePathName);
+            values.put(IMAGE_FIREBASE_URL,user.getImageFireBaseUrl());
             values.put(FIRST_NAME, user.getFirstName());
             values.put(LAST_NAME, user.getLastName());
             values.put(BIRTHDAY, user.getBirthday());
@@ -120,7 +122,7 @@ class UserSql
             User user = new User();
 
             user.setUserID(cursor.getString(cursor.getColumnIndex(USER_ID)));
-            user.setImageUrl(cursor.getString(cursor.getColumnIndex(IMAGE_URL)));
+            user.setImageFireBaseUrl(cursor.getString(cursor.getColumnIndex(IMAGE_FIREBASE_URL)));
             user.setFirstName(cursor.getString(cursor.getColumnIndex(FIRST_NAME)));
             user.setLastName(cursor.getString(cursor.getColumnIndex(LAST_NAME)));
             user.setBirthday(cursor.getLong(cursor.getColumnIndex(BIRTHDAY)));

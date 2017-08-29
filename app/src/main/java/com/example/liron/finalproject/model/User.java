@@ -9,7 +9,8 @@ import android.graphics.Bitmap;
 public class User {
     private String userID;
     private Bitmap userImage;
-    private String imageUrl;
+    private String imageFireBaseUrl;
+    private String imageLocalUrl;
     private String firstName;
     private String lastName;
     private long birthday;
@@ -19,10 +20,10 @@ public class User {
     private int isSignedIn;//int because this is how it going to be stored in sqlite,0-not signed ,1- signed
 
 
-    public User(String userID, Bitmap userImage, String imageUrl, String firstName, String lastName, long birthday, String email, String password, long lastUpdated, int isSignedIn) {
+    public User(String userID, Bitmap userImage, String imageFireBaseUrl, String firstName, String lastName, long birthday, String email, String password, long lastUpdated, int isSignedIn) {
         this.userID = userID;
         this.userImage = userImage;
-        this.imageUrl = imageUrl;
+        this.imageFireBaseUrl = imageFireBaseUrl;
         this.firstName = firstName;
         this.lastName = lastName;
         this.birthday = birthday;
@@ -90,12 +91,12 @@ public class User {
         this.password = password;
     }
 
-    public String getImageUrl() {
-        return imageUrl;
+    public String getImageFireBaseUrl() {
+        return imageFireBaseUrl;
     }
 
-    public void setImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl;
+    public void setImageFireBaseUrl(String imageFireBaseUrl) {
+        this.imageFireBaseUrl = imageFireBaseUrl;
     }
 
     public long getLastUpdated() {
@@ -126,5 +127,13 @@ public class User {
     public void setIntFromBoolInSignIn(Boolean isSignIn)
     {
         this.isSignedIn = isSignIn==true ? 1 : 0;
+    }
+
+    public String getImageLocalUrl() {
+        return imageLocalUrl;
+    }
+
+    public void setImageLocalUrl(String imageLocalUrl) {
+        this.imageLocalUrl = imageLocalUrl;
     }
 }

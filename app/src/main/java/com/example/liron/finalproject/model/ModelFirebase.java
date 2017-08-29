@@ -139,7 +139,7 @@ public class ModelFirebase {
 
                             //enter the image name(not absolute path)
                             String imageName=user.getUserID()+"_"+System.currentTimeMillis();
-                            user.setImageUrl(imageName);
+                            user.setImageFireBaseUrl(imageName);
 
                             sular.saveUserToLocal(user);
                             sular.saveUserToRemote(user);
@@ -297,7 +297,7 @@ public class ModelFirebase {
     private void saveImage(final User user,final Model.LoginListener viewlistener){
 
         Bitmap imageBmp=user.getUserImage();
-        String imageName=user.getImageUrl();
+        String imageName=user.getImageFireBaseUrl();
 
         StorageReference imagesRef = mStorageRef.child("images").child(imageName);
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -353,7 +353,7 @@ public class ModelFirebase {
 
                 User currentuser = new User();
                 currentuser.setUserID(dataSnapshot.child("id").getValue().toString());
-                currentuser.setImageUrl(dataSnapshot.child("imageUrl").getValue().toString());
+                currentuser.setImageFireBaseUrl(dataSnapshot.child("imageUrl").getValue().toString());
                 currentuser.setFirstName(dataSnapshot.child("firstName").getValue().toString());
                 currentuser.setLastName(dataSnapshot.child("lastName").getValue().toString());
                 currentuser.setBirthday((long)dataSnapshot.child("birthday").getValue());
@@ -420,7 +420,7 @@ public class ModelFirebase {
                         String absoluteImageUrl = snap.child("imageUrl").getValue().toString();
 
                         String imageName = absoluteImageUrl.substring(absoluteImageUrl.indexOf(user.getUserID()), absoluteImageUrl.indexOf("?"));
-                        user.setImageUrl(imageName);
+                        user.setImageFireBaseUrl(imageName);
 
                         Glide.with(listener.getAppContext())
                                 .load(absoluteImageUrl)
@@ -469,7 +469,7 @@ public class ModelFirebase {
 
                         User currentuser = new User();
                         currentuser.setUserID(snap.child("rideOwner").child("userID").getValue().toString());
-                        currentuser.setImageUrl(snap.child("rideOwner").child("imageUrl").getValue().toString());
+                        currentuser.setImageFireBaseUrl(snap.child("rideOwner").child("imageUrl").getValue().toString());
                         currentuser.setFirstName(snap.child("rideOwner").child("firstName").getValue().toString());
                         currentuser.setLastName(snap.child("rideOwner").child("lastName").getValue().toString());
                         currentuser.setBirthday((long)snap.child("rideOwner").child("birthday").getValue());
@@ -486,7 +486,7 @@ public class ModelFirebase {
                         String absoluteImageName = snap.child("rideOwner").child("imageUrl").getValue().toString();
 
                         String imageName = absoluteImageName.substring(absoluteImageName.indexOf(ride.getRideOwner().getUserID()), absoluteImageName.indexOf("?"));
-                        ride.getRideOwner().setImageUrl(imageName);
+                        ride.getRideOwner().setImageFireBaseUrl(imageName);
 
                         Glide.with(listener.getAppContext())
                                 .load(absoluteImageName)
