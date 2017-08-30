@@ -41,7 +41,7 @@ public class ModelSql {
     {
         public Helper(Context context)
         {
-            super(context, "DataBase.db" , null, 3);
+            super(context, "DataBase.db" , null, 4);
         }
 
         @Override

@@ -320,7 +320,7 @@ public class ModelFirebase {
                 //saving user deatails to storage
                 HashMap<String, Object> result = new HashMap<>();
                 result.put("id",user.getUserID());
-                result.put("imageUrl",imagePath);
+                result.put("ImageFireBaseUrl",imagePath);
                 result.put("firstName",user.getFirstName());
                 result.put("lastName",user.getLastName());
                 result.put("birthday",user.getBirthday());
@@ -353,7 +353,7 @@ public class ModelFirebase {
 
                 User currentuser = new User();
                 currentuser.setUserID(dataSnapshot.child("id").getValue().toString());
-                currentuser.setImageFireBaseUrl(dataSnapshot.child("imageUrl").getValue().toString());
+                currentuser.setImageFireBaseUrl(dataSnapshot.child("ImageFireBaseUrl").getValue().toString());
                 currentuser.setFirstName(dataSnapshot.child("firstName").getValue().toString());
                 currentuser.setLastName(dataSnapshot.child("lastName").getValue().toString());
                 currentuser.setBirthday((long)dataSnapshot.child("birthday").getValue());
@@ -417,7 +417,7 @@ public class ModelFirebase {
                         user.setLastName(snap.child("lastName").getValue().toString());
                         user.setBirthday((long) snap.child("birthday").getValue());
 
-                        String absoluteImageUrl = snap.child("imageUrl").getValue().toString();
+                        String absoluteImageUrl = snap.child("ImageFireBaseUrl").getValue().toString();
 
                         String imageName = absoluteImageUrl.substring(absoluteImageUrl.indexOf(user.getUserID()), absoluteImageUrl.indexOf("?"));
                         user.setImageFireBaseUrl(imageName);
@@ -469,7 +469,7 @@ public class ModelFirebase {
 
                         User currentuser = new User();
                         currentuser.setUserID(snap.child("rideOwner").child("userID").getValue().toString());
-                        currentuser.setImageFireBaseUrl(snap.child("rideOwner").child("imageUrl").getValue().toString());
+                        currentuser.setImageFireBaseUrl(snap.child("rideOwner").child("imageFireBaseUrl").getValue().toString());
                         currentuser.setFirstName(snap.child("rideOwner").child("firstName").getValue().toString());
                         currentuser.setLastName(snap.child("rideOwner").child("lastName").getValue().toString());
                         currentuser.setBirthday((long)snap.child("rideOwner").child("birthday").getValue());
@@ -483,7 +483,7 @@ public class ModelFirebase {
                         ride.setRideID(snap.child("rideID").getValue().toString());
                         ride.setHitchhikers((ArrayList<String>)snap.child("hitchhikers").getValue());
 
-                        String absoluteImageName = snap.child("rideOwner").child("imageUrl").getValue().toString();
+                        String absoluteImageName = snap.child("rideOwner").child("imageFireBaseUrl").getValue().toString();
 
                         String imageName = absoluteImageName.substring(absoluteImageName.indexOf(ride.getRideOwner().getUserID()), absoluteImageName.indexOf("?"));
                         ride.getRideOwner().setImageFireBaseUrl(imageName);
