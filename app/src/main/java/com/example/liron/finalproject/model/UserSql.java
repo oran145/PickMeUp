@@ -52,13 +52,12 @@ class UserSql
             if(absolutePathName==null)
             {
                 Log.e("TAG","fail to save image");
-                return;
             }
 
             ContentValues values = new ContentValues();
 
             values.put(USER_ID, user.getUserID());
-            values.put(IMAGE_LOCAL_URL,absolutePathName);
+            //values.put(IMAGE_LOCAL_URL,absolutePathName);
             values.put(IMAGE_FIREBASE_URL,user.getImageFireBaseUrl());
             values.put(FIRST_NAME, user.getFirstName());
             values.put(LAST_NAME, user.getLastName());
