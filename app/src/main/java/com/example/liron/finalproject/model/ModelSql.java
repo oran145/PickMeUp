@@ -41,7 +41,7 @@ public class ModelSql {
     {
         public Helper(Context context)
         {
-            super(context, "DataBase.db" , null, 1);
+            super(context, "DataBase.db" , null, 3);
         }
 
         @Override
@@ -56,6 +56,7 @@ public class ModelSql {
         {
             RideSql.onUpgrade(db);
             UserSql.onUpgrade(db);
+            onCreate(db);
         }
     }
 

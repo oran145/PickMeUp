@@ -40,7 +40,7 @@ class RideSql
 
     public static void onUpgrade(SQLiteDatabase db)
     {
-        db.execSQL("DROP TABLE " + RIDES);
+        db.execSQL("DROP TABLE IF EXISTS " + RIDES);
     }
 
 

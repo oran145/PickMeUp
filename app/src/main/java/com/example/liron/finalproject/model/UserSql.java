@@ -41,7 +41,7 @@ class UserSql
 
 
     public static void onUpgrade(SQLiteDatabase sqLiteDatabase) {
-        sqLiteDatabase.execSQL("DROP TABLE " + USERS);
+        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + USERS);
     }
 
     public static void writeUsersFromFireBase(SQLiteDatabase writableDatabase , ArrayList<User> userList)
