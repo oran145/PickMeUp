@@ -16,6 +16,7 @@ import android.widget.ListView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.example.liron.finalproject.MyAppContext;
 import com.example.liron.finalproject.R;
 import com.example.liron.finalproject.model.Model;
@@ -155,6 +156,13 @@ public class RidesListFragment extends Fragment {
             holder.plusButton.setTag(position);
 
             String imgeUrlTest = rideInPosition.getRideOwner().getImageFireBaseUrl();
+
+            Glide.with(MyAppContext.getAppContext())
+                    .load(imgeUrlTest)
+                    //.asBitmap()
+                    // .toBytes()
+                    .centerCrop()
+                    .into(holder.contactImage);
 
             holder.plusButton.setOnClickListener(new View.OnClickListener() {
                 @Override
