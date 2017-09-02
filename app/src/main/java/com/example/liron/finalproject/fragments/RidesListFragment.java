@@ -154,6 +154,8 @@ public class RidesListFragment extends Fragment {
             holder.to.setText(rideInPosition.getTo());
             holder.plusButton.setTag(position);
 
+            String imgeUrlTest = rideInPosition.getRideOwner().getImageFireBaseUrl();
+
             holder.plusButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v)

@@ -420,7 +420,7 @@ public class ModelFirebase {
                         String absoluteImageUrl = snap.child("ImageFireBaseUrl").getValue().toString();
 
                         String imageName = absoluteImageUrl.substring(absoluteImageUrl.indexOf(user.getUserID()), absoluteImageUrl.indexOf("?"));
-                        user.setImageFireBaseUrl(imageName);
+                        user.setImageFireBaseUrl(absoluteImageUrl);
 
                         Glide.with(listener.getAppContext())
                                 .load(absoluteImageUrl)
@@ -486,7 +486,7 @@ public class ModelFirebase {
                         String absoluteImageName = snap.child("rideOwner").child("imageFireBaseUrl").getValue().toString();
 
                         String imageName = absoluteImageName.substring(absoluteImageName.indexOf(ride.getRideOwner().getUserID()), absoluteImageName.indexOf("?"));
-                        ride.getRideOwner().setImageFireBaseUrl(imageName);
+                        ride.getRideOwner().setImageFireBaseUrl(absoluteImageName);
 
                         Glide.with(listener.getAppContext())
                                 .load(absoluteImageName)
