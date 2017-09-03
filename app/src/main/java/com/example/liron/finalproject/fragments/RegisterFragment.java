@@ -24,19 +24,15 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 
-
 import com.example.liron.finalproject.Constants;
 import com.example.liron.finalproject.MyAppContext;
 import com.example.liron.finalproject.R;
+import com.example.liron.finalproject.Utilities.utilities;
 import com.example.liron.finalproject.Utility;
 import com.example.liron.finalproject.model.User;
-import com.example.liron.finalproject.Utilities.utilities;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -325,27 +321,6 @@ public class RegisterFragment extends Fragment {
         Bitmap thumbnail = (Bitmap) data.getExtras().get("data");
 
         Uri tempUri = getImageUri(MyAppContext.getAppContext(), thumbnail);
-//        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-//        if (thumbnail != null) {
-//            thumbnail.compress(Bitmap.CompressFormat.JPEG, 90, bytes);
-//        }
-//
-//
-//        File destination = new File(Environment.getExternalStorageDirectory(),
-//                          System.currentTimeMillis() + ".jpg");
-//
-//        FileOutputStream fo;
-//        try {
-//            destination.createNewFile();
-//            fo = new FileOutputStream(destination);
-//            fo.write(bytes.toByteArray());
-//            fo.close();
-//        } catch (FileNotFoundException e) {
-//            e.printStackTrace();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-
         Bitmap rotatedThumbnail=null;
 
         try {

@@ -59,45 +59,17 @@ public class ModelFirebase {
 
         //initialize the FirebaseAuth instance and the AuthStateListener method so you can track whenever the user signs in or out.
         // [START auth_state_listener]
-        mAuthListener = new FirebaseAuth.AuthStateListener() {
+        mAuthListener = new FirebaseAuth.AuthStateListener()
+        {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 FirebaseUser user = firebaseAuth.getCurrentUser();
-//                if (user != null) {
-//                    // User is signed in
-//                    Log.d(TAG, "onAuthStateChanged:signed_in:" + user.getUid());
-//                } else {
-//                    // User is signed out
-//                    Log.d(TAG, "onAuthStateChanged:signed_out");
-//                }
-                // [START_EXCLUDE]
-                //updateUI(user);
-                // [END_EXCLUDE]
+
             }
         };
-        // [END auth_state_listener]
-        //-----------End Authentication------------
-        //--------------firebase database---------------
+
         database= FirebaseDatabase.getInstance();
         mStorageRef = FirebaseStorage.getInstance().getReference();
-    }
-    /**
-     * sets a listenr wich indicates if the user is signed in
-     */
-    public void addAuthStateListener(final Model.LoginListener listener)
-    {
-        //add a listener which indicates weather the usr is authonticated or not.
-        //if the user was authonticated previously,Firebase will try to renew its session with the roundtrip to the server
-        mAuth.addAuthStateListener(mAuthListener);
-    }
-    public void removeAuthStateListener()
-    {
-        if (mAuthListener != null) {
-            //add a listener which indicates weather the usr is authonticated or not.
-            //if the user was authonticated previously,Firebase will try to renew its session with the roundtrip to the server
-            mAuth.removeAuthStateListener(mAuthListener);
-        }
-
     }
 
     /**
@@ -225,16 +197,6 @@ public class ModelFirebase {
         // [END sign_in_with_email]
     }
 
-//    public void signOut(final Model.SignInListener databseListener,Model.ChatListener chatListener) {
-//
-//        chatListener.showProgressBar();
-//        databseListener.changeIsSignedInLocal(mAuth.getCurrentUser().getUid(),0);
-//        databseListener.changeIsSignedInRemote(mAuth.getCurrentUser().getUid(),false);
-//        mAuth.signOut();
-//        chatListener.hideProgressBar();
-//        chatListener.goToMainActivity();
-//
-//    }
 
     public void signInAfterRegister(String email, String password,final Model.LoginListener listener, final Model.SignInListener databseListener)
     {
@@ -320,12 +282,13 @@ public class ModelFirebase {
                 //saving user deatails to storage
                 HashMap<String, Object> result = new HashMap<>();
                 result.put("id",user.getUserID());
-                result.put("imageUrl",imagePath);
+                result.put("ImageFireBaseUrl",imagePath);
                 result.put("firstName",user.getFirstName());
                 result.put("lastName",user.getLastName());
                 result.put("birthday",user.getBirthday());
                 result.put("isSignedIn",user.translateIsSignedInToBool());
                 result.put("lastUpdated",user.getLastUpdated());
+                result.put("email",mAuth.getCurrentUser().getEmail().toString());
 
 
                 DatabaseReference myRef = database.getReference("users").child(user.getUserID());
@@ -353,10 +316,12 @@ public class ModelFirebase {
 
                 User currentuser = new User();
                 currentuser.setUserID(dataSnapshot.child("id").getValue().toString());
-                currentuser.setImageFireBaseUrl(dataSnapshot.child("imageUrl").getValue().toString());
+                currentuser.setImageFireBaseUrl(dataSnapshot.child("ImageFireBaseUrl").getValue().toString());
                 currentuser.setFirstName(dataSnapshot.child("firstName").getValue().toString());
                 currentuser.setLastName(dataSnapshot.child("lastName").getValue().toString());
                 currentuser.setBirthday((long)dataSnapshot.child("birthday").getValue());
+                currentuser.setEmail(dataSnapshot.child("email").getValue().toString());
+
 
                 insertRideToDb(currentuser,ride);
                 saveListener.hideProgressBar();
@@ -416,11 +381,12 @@ public class ModelFirebase {
                         user.setFirstName(snap.child("firstName").getValue().toString());
                         user.setLastName(snap.child("lastName").getValue().toString());
                         user.setBirthday((long) snap.child("birthday").getValue());
+                        user.setEmail(snap.child("email").getValue().toString());
 
-                        String absoluteImageUrl = snap.child("imageUrl").getValue().toString();
+                        String absoluteImageUrl = snap.child("ImageFireBaseUrl").getValue().toString();
 
                         String imageName = absoluteImageUrl.substring(absoluteImageUrl.indexOf(user.getUserID()), absoluteImageUrl.indexOf("?"));
-                        user.setImageFireBaseUrl(imageName);
+                        user.setImageFireBaseUrl(absoluteImageUrl);
 
                         Glide.with(listener.getAppContext())
                                 .load(absoluteImageUrl)
@@ -469,10 +435,11 @@ public class ModelFirebase {
 
                         User currentuser = new User();
                         currentuser.setUserID(snap.child("rideOwner").child("userID").getValue().toString());
-                        currentuser.setImageFireBaseUrl(snap.child("rideOwner").child("imageUrl").getValue().toString());
+                        currentuser.setImageFireBaseUrl(snap.child("rideOwner").child("imageFireBaseUrl").getValue().toString());
                         currentuser.setFirstName(snap.child("rideOwner").child("firstName").getValue().toString());
                         currentuser.setLastName(snap.child("rideOwner").child("lastName").getValue().toString());
                         currentuser.setBirthday((long)snap.child("rideOwner").child("birthday").getValue());
+                        currentuser.setEmail(snap.child("rideOwner").child("email").getValue().toString());
 
                         ride.setRideOwner(currentuser);
                         ride.setDate((String) snap.child("rideDate").getValue());
@@ -483,10 +450,9 @@ public class ModelFirebase {
                         ride.setRideID(snap.child("rideID").getValue().toString());
                         ride.setHitchhikers((ArrayList<String>)snap.child("hitchhikers").getValue());
 
-                        String absoluteImageName = snap.child("rideOwner").child("imageUrl").getValue().toString();
+                        String absoluteImageName = snap.child("rideOwner").child("imageFireBaseUrl").getValue().toString();
 
-                        String imageName = absoluteImageName.substring(absoluteImageName.indexOf(ride.getRideOwner().getUserID()), absoluteImageName.indexOf("?"));
-                        ride.getRideOwner().setImageFireBaseUrl(imageName);
+                        ride.getRideOwner().setImageFireBaseUrl(absoluteImageName);
 
                         Glide.with(listener.getAppContext())
                                 .load(absoluteImageName)
@@ -567,4 +533,6 @@ public class ModelFirebase {
     {
         database.getReference("ride").child(rideID).removeValue();
     }
+
+
 }

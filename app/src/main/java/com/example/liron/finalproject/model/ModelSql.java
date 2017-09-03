@@ -41,7 +41,7 @@ public class ModelSql {
     {
         public Helper(Context context)
         {
-            super(context, "DataBase.db" , null, 1);
+            super(context, "DataBase.db" , null, 7);
         }
 
         @Override
@@ -56,8 +56,14 @@ public class ModelSql {
         {
             RideSql.onUpgrade(db);
             UserSql.onUpgrade(db);
+            onCreate(db);
         }
     }
 
+    public String getEmailById(String id)
+    {
+        User user = UserSql.getUserById(helper.getReadableDatabase(),id);
+        return user.getEmail();
+    }
 
 }
