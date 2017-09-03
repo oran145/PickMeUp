@@ -248,7 +248,7 @@ public class RegisterFragment extends Fragment {
      */
     private void selectImage() {
         userChoosenTask=null;
-        final CharSequence[] items = { "Take Photo", "Choose from Library",
+        final CharSequence[] items = { "Choose from Library",
                 "Cancel" };
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
@@ -258,12 +258,14 @@ public class RegisterFragment extends Fragment {
             public void onClick(DialogInterface dialog, int item) {
                 boolean result= Utility.checkPermission(getActivity());
 
-                if (items[item].equals("Take Photo")) {
-                    userChoosenTask="Take Photo";
-                    if(result)
-                        cameraIntent();
+//                if (items[item].equals("Take Photo")) {
+//                    userChoosenTask="Take Photo";
+//                    if(result)
+//                        cameraIntent();
+//
+//                } else
 
-                } else if (items[item].equals("Choose from Library")) {
+                 if(items[item].equals("Choose from Library")) {
                     userChoosenTask="Choose from Library";
                     if(result)
                         galleryIntent();
