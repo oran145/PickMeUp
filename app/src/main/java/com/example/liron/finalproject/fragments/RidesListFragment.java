@@ -4,7 +4,6 @@ package com.example.liron.finalproject.fragments;
 import android.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -270,22 +269,18 @@ public class RidesListFragment extends Fragment {
         protected void sendEmail(Ride ride ,int flag)
         {
             Intent emailIntent = new Intent(Intent.ACTION_SEND);
-            emailIntent.setData(Uri.parse("mailto:"));
-            String[] TO={""};
-            String[] CC={""};
+
 
             switch (flag)
             {
                 case 1 :
 
-                    Log.i("Send email", "");
-                    TO = new String[1];
+                    String[] TO={ride.getRideOwner().getEmail().toString()};
 
                     emailIntent.setType("text/plain");
                     emailIntent.putExtra(Intent.EXTRA_EMAIL, TO);
-                    emailIntent.putExtra(Intent.EXTRA_CC, CC);
-                    emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Your subject");
-                    emailIntent.putExtra(Intent.EXTRA_TEXT, "Email message goes here");
+                    emailIntent.putExtra(Intent.EXTRA_SUBJECT, "ride register");
+                    emailIntent.putExtra(Intent.EXTRA_TEXT, "... was registered to your ride");
 
                     break;
 
@@ -293,10 +288,10 @@ public class RidesListFragment extends Fragment {
 
                     Log.i("Send email", "");
 
-                    emailIntent.setData(Uri.parse("mailto:"));
+
                     emailIntent.setType("text/plain");
-                    emailIntent.putExtra(Intent.EXTRA_EMAIL, TO);
-                    emailIntent.putExtra(Intent.EXTRA_CC, CC);
+                    //emailIntent.putExtra(Intent.EXTRA_EMAIL, TO);
+                    //emailIntent.putExtra(Intent.EXTRA_CC, CC);
                     emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Your subject");
                     emailIntent.putExtra(Intent.EXTRA_TEXT, "Email message goes here");
 
@@ -306,10 +301,9 @@ public class RidesListFragment extends Fragment {
 
                     Log.i("Send email", "");
 
-                    emailIntent.setData(Uri.parse("mailto:"));
                     emailIntent.setType("text/plain");
-                    emailIntent.putExtra(Intent.EXTRA_EMAIL, TO);
-                    emailIntent.putExtra(Intent.EXTRA_CC, CC);
+                    //emailIntent.putExtra(Intent.EXTRA_EMAIL, TO);
+                    //emailIntent.putExtra(Intent.EXTRA_CC, CC);
                     emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Your subject");
                     emailIntent.putExtra(Intent.EXTRA_TEXT, "Email message goes here");
 
@@ -319,7 +313,6 @@ public class RidesListFragment extends Fragment {
             try
             {
                 startActivity(Intent.createChooser(emailIntent, "Send mail..."));
-                //finish();
             }
             catch (android.content.ActivityNotFoundException ex)
             {
