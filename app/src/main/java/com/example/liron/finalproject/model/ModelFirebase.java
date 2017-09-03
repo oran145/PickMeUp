@@ -326,6 +326,7 @@ public class ModelFirebase {
                 result.put("birthday",user.getBirthday());
                 result.put("isSignedIn",user.translateIsSignedInToBool());
                 result.put("lastUpdated",user.getLastUpdated());
+                result.put("email",mAuth.getCurrentUser().getEmail().toString());
 
 
                 DatabaseReference myRef = database.getReference("users").child(user.getUserID());
@@ -357,6 +358,8 @@ public class ModelFirebase {
                 currentuser.setFirstName(dataSnapshot.child("firstName").getValue().toString());
                 currentuser.setLastName(dataSnapshot.child("lastName").getValue().toString());
                 currentuser.setBirthday((long)dataSnapshot.child("birthday").getValue());
+                currentuser.setEmail(dataSnapshot.child("email").getValue().toString());
+
 
                 insertRideToDb(currentuser,ride);
                 saveListener.hideProgressBar();
@@ -416,6 +419,7 @@ public class ModelFirebase {
                         user.setFirstName(snap.child("firstName").getValue().toString());
                         user.setLastName(snap.child("lastName").getValue().toString());
                         user.setBirthday((long) snap.child("birthday").getValue());
+                        user.setEmail(snap.child("email").getValue().toString());
 
                         String absoluteImageUrl = snap.child("ImageFireBaseUrl").getValue().toString();
 
@@ -473,6 +477,7 @@ public class ModelFirebase {
                         currentuser.setFirstName(snap.child("rideOwner").child("firstName").getValue().toString());
                         currentuser.setLastName(snap.child("rideOwner").child("lastName").getValue().toString());
                         currentuser.setBirthday((long)snap.child("rideOwner").child("birthday").getValue());
+                        currentuser.setEmail(snap.child("rideOwner").child("email").getValue().toString());
 
                         ride.setRideOwner(currentuser);
                         ride.setDate((String) snap.child("rideDate").getValue());
@@ -485,7 +490,6 @@ public class ModelFirebase {
 
                         String absoluteImageName = snap.child("rideOwner").child("imageFireBaseUrl").getValue().toString();
 
-                        String imageName = absoluteImageName.substring(absoluteImageName.indexOf(ride.getRideOwner().getUserID()), absoluteImageName.indexOf("?"));
                         ride.getRideOwner().setImageFireBaseUrl(absoluteImageName);
 
                         Glide.with(listener.getAppContext())
@@ -567,4 +571,7 @@ public class ModelFirebase {
     {
         database.getReference("ride").child(rideID).removeValue();
     }
+
+
+
 }

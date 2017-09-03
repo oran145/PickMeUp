@@ -3,7 +3,10 @@ package com.example.liron.finalproject.fragments;
 
 import android.app.Fragment;
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -212,17 +215,17 @@ public class RidesListFragment extends Fragment {
                                         case R.id.subscribe:
 
                                             Model.getInstance().addHitchhiker(tempRide.getRideID());
-
+                                            sendEmail(tempRide,1);
                                             break;
 
                                         case R.id.unsubscribe:
                                             Model.getInstance().removeHitchhiker(tempRide.getRideID());
-
+                                            sendEmail(tempRide,2);
                                             break;
 
                                         case R.id.delete:
-
                                             Model.getInstance().removeRide(tempRide.getRideID());
+                                            sendEmail(tempRide,3);
                                             break;
 
                                         default:
@@ -263,6 +266,66 @@ public class RidesListFragment extends Fragment {
             listData = rides;
             this.notifyDataSetChanged();
         }
+
+        protected void sendEmail(Ride ride ,int flag)
+        {
+            Intent emailIntent = new Intent(Intent.ACTION_SEND);
+            emailIntent.setData(Uri.parse("mailto:"));
+            String[] TO={""};
+            String[] CC={""};
+
+            switch (flag)
+            {
+                case 1 :
+
+                    Log.i("Send email", "");
+                    TO = new String[1];
+
+                    emailIntent.setType("text/plain");
+                    emailIntent.putExtra(Intent.EXTRA_EMAIL, TO);
+                    emailIntent.putExtra(Intent.EXTRA_CC, CC);
+                    emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Your subject");
+                    emailIntent.putExtra(Intent.EXTRA_TEXT, "Email message goes here");
+
+                    break;
+
+                case 2 :
+
+                    Log.i("Send email", "");
+
+                    emailIntent.setData(Uri.parse("mailto:"));
+                    emailIntent.setType("text/plain");
+                    emailIntent.putExtra(Intent.EXTRA_EMAIL, TO);
+                    emailIntent.putExtra(Intent.EXTRA_CC, CC);
+                    emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Your subject");
+                    emailIntent.putExtra(Intent.EXTRA_TEXT, "Email message goes here");
+
+                    break;
+
+                case 3 :
+
+                    Log.i("Send email", "");
+
+                    emailIntent.setData(Uri.parse("mailto:"));
+                    emailIntent.setType("text/plain");
+                    emailIntent.putExtra(Intent.EXTRA_EMAIL, TO);
+                    emailIntent.putExtra(Intent.EXTRA_CC, CC);
+                    emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Your subject");
+                    emailIntent.putExtra(Intent.EXTRA_TEXT, "Email message goes here");
+
+                    break;
+            }
+
+            try
+            {
+                startActivity(Intent.createChooser(emailIntent, "Send mail..."));
+                //finish();
+            }
+            catch (android.content.ActivityNotFoundException ex)
+            {
+            }
+        }
+
 
     }
 }

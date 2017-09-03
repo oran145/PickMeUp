@@ -32,11 +32,12 @@ class UserSql
     private static final String FIRST_NAME = "firstName";//user first name
     private static final String LAST_NAME = "lastName";
     private static final String BIRTHDAY="birthday";
+    private static final String EMAIL="email";
 
 
     public static void onCreate(SQLiteDatabase sqLiteDatabase) {
         sqLiteDatabase.execSQL("CREATE TABLE " + USERS + " (" + USER_ID + " TEXT PRIMARY KEY, "
-                + IMAGE_LOCAL_URL + " TEXT, " + IMAGE_FIREBASE_URL + " TEXT, " + FIRST_NAME + " TEXT, "+LAST_NAME+" TEXT, "+BIRTHDAY+" INTEGER)");
+                + IMAGE_LOCAL_URL + " TEXT, " + EMAIL + " TEXT, " + IMAGE_FIREBASE_URL + " TEXT, " + FIRST_NAME + " TEXT, "+LAST_NAME+" TEXT, "+BIRTHDAY+" INTEGER)");
     }
 
 
@@ -57,7 +58,7 @@ class UserSql
             ContentValues values = new ContentValues();
 
             values.put(USER_ID, user.getUserID());
-            //values.put(IMAGE_LOCAL_URL,absolutePathName);
+            values.put(EMAIL,user.getEmail());
             values.put(IMAGE_FIREBASE_URL,user.getImageFireBaseUrl());
             values.put(FIRST_NAME, user.getFirstName());
             values.put(LAST_NAME, user.getLastName());
@@ -125,6 +126,7 @@ class UserSql
             user.setFirstName(cursor.getString(cursor.getColumnIndex(FIRST_NAME)));
             user.setLastName(cursor.getString(cursor.getColumnIndex(LAST_NAME)));
             user.setBirthday(cursor.getLong(cursor.getColumnIndex(BIRTHDAY)));
+            user.setEmail(cursor.getString(cursor.getColumnIndex(EMAIL)));
 
             return user;
         }
