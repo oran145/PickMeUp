@@ -3,9 +3,7 @@ package com.example.liron.finalproject.fragments;
 
 import android.app.Fragment;
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -34,15 +32,25 @@ public class RidesListFragment extends Fragment {
     RidesListAdapter ridesAdapter;
     String currentUserId;
 
-    public interface Delegate{
+    public interface rideDelegate {
         void onItemClick(User user);
         void showProgressBar();
         void hideProgressBar();
     }
 
-    Delegate delegate;
-    public void setDelegate(Delegate dlg){
-        this.delegate = dlg;
+    public interface emailDelegate
+    {
+        void rideSubEmail(String ownerEmail);
+        void rideUnsubEmail(String ownerEmail);
+        void rideDeleteEmail(Ride ride);
+    }
+
+    rideDelegate rideDelegate;
+    emailDelegate emailDelegate;
+
+    public void setEmailDelegate(emailDelegate edlg) {this.emailDelegate = edlg;}
+    public void setRideDelegate(rideDelegate dlg){
+        this.rideDelegate = dlg;
     }
 
 
@@ -79,12 +87,12 @@ public class RidesListFragment extends Fragment {
             }
 
             public void showProgressBar() {
-                delegate.showProgressBar();
+                rideDelegate.showProgressBar();
             }
 
             public void hideProgressBar()
             {
-                delegate.hideProgressBar();
+                rideDelegate.hideProgressBar();
             }
         });
     }
@@ -214,17 +222,17 @@ public class RidesListFragment extends Fragment {
                                         case R.id.subscribe:
 
                                             Model.getInstance().addHitchhiker(tempRide.getRideID());
-                                            sendEmail(tempRide,1);
+                                            emailDelegate.rideSubEmail(tempRide.getRideOwner().getEmail().toString());
                                             break;
 
                                         case R.id.unsubscribe:
                                             Model.getInstance().removeHitchhiker(tempRide.getRideID());
-                                            sendEmail(tempRide,2);
+                                            emailDelegate.rideUnsubEmail(tempRide.getRideOwner().getEmail().toString());
                                             break;
 
                                         case R.id.delete:
                                             Model.getInstance().removeRide(tempRide.getRideID());
-                                            sendEmail(tempRide,3);
+                                            emailDelegate.rideDeleteEmail(tempRide);
                                             break;
 
                                         default:
@@ -265,60 +273,6 @@ public class RidesListFragment extends Fragment {
             listData = rides;
             this.notifyDataSetChanged();
         }
-
-        protected void sendEmail(Ride ride ,int flag)
-        {
-            Intent emailIntent = new Intent(Intent.ACTION_SEND);
-
-
-            switch (flag)
-            {
-                case 1 :
-
-                    String[] TO={ride.getRideOwner().getEmail().toString()};
-
-                    emailIntent.setType("text/plain");
-                    emailIntent.putExtra(Intent.EXTRA_EMAIL, TO);
-                    emailIntent.putExtra(Intent.EXTRA_SUBJECT, "ride register");
-                    emailIntent.putExtra(Intent.EXTRA_TEXT, "... was registered to your ride");
-
-                    break;
-
-                case 2 :
-
-                    Log.i("Send email", "");
-
-
-                    emailIntent.setType("text/plain");
-                    //emailIntent.putExtra(Intent.EXTRA_EMAIL, TO);
-                    //emailIntent.putExtra(Intent.EXTRA_CC, CC);
-                    emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Your subject");
-                    emailIntent.putExtra(Intent.EXTRA_TEXT, "Email message goes here");
-
-                    break;
-
-                case 3 :
-
-                    Log.i("Send email", "");
-
-                    emailIntent.setType("text/plain");
-                    //emailIntent.putExtra(Intent.EXTRA_EMAIL, TO);
-                    //emailIntent.putExtra(Intent.EXTRA_CC, CC);
-                    emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Your subject");
-                    emailIntent.putExtra(Intent.EXTRA_TEXT, "Email message goes here");
-
-                    break;
-            }
-
-            try
-            {
-                startActivity(Intent.createChooser(emailIntent, "Send mail..."));
-            }
-            catch (android.content.ActivityNotFoundException ex)
-            {
-            }
-        }
-
 
     }
 }

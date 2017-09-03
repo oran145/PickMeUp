@@ -2,10 +2,12 @@ package com.example.liron.finalproject;
 
 import android.app.Activity;
 import android.app.FragmentTransaction;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.example.liron.finalproject.Dialogs.DateDialogFragment;
 import com.example.liron.finalproject.Dialogs.MyProgressBar;
@@ -45,6 +47,7 @@ public class PickMeAppActivity extends Activity {
         };
 
         setRidesListDelegate();
+        setEmailDelegate();
 
         addRideFragment.setDelegate(new AddRideFragment.Delegate() {
             @Override
@@ -92,8 +95,9 @@ public class PickMeAppActivity extends Activity {
 
     }
 
-    private void setRidesListDelegate() {
-        ridesListFragment.setDelegate(new RidesListFragment.Delegate() {
+    private void setRidesListDelegate()
+    {
+        ridesListFragment.setRideDelegate(new RidesListFragment.rideDelegate() {
             @Override
             public void onItemClick(User user) {
             }
@@ -106,6 +110,44 @@ public class PickMeAppActivity extends Activity {
             @Override
             public void hideProgressBar() {
                 progressBar.hideProgressDialog();
+            }
+        });
+    }
+
+    private void setEmailDelegate()
+    {
+        ridesListFragment.setEmailDelegate(new RidesListFragment.emailDelegate() {
+            @Override
+            public void rideSubEmail(String ownerEmail)
+            {
+                Intent emailIntent = new Intent(Intent.ACTION_SEND);
+
+                String[] TO={ownerEmail};
+
+                emailIntent.setType("message/rfc822");
+                emailIntent.putExtra(Intent.EXTRA_EMAIL, TO);
+                emailIntent.putExtra(Intent.EXTRA_SUBJECT, "ride register");
+                emailIntent.putExtra(Intent.EXTRA_TEXT, "... was registered to your ride");
+                try
+                {
+                    startActivity(Intent.createChooser(emailIntent, "Send mail..."));
+                }
+                catch (android.content.ActivityNotFoundException ex)
+                {
+                    Toast.makeText(PickMeAppActivity.this, "There are no email clients installed.", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void rideUnsubEmail(String ownerEmail)
+            {
+
+            }
+
+            @Override
+            public void rideDeleteEmail(Ride ride)
+            {
+
             }
         });
     }
@@ -153,5 +195,4 @@ public class PickMeAppActivity extends Activity {
                 return super.onOptionsItemSelected(item);
         }
     }
-
 }
