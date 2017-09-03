@@ -138,6 +138,7 @@ public class RidesListFragment extends Fragment {
                 holder.from = (TextView) convertView.findViewById(R.id.list_row_ride_from_textView);
                 holder.to = (TextView) convertView.findViewById(R.id.list_row_ride_to_textView);
                 holder.plusButton = (ImageButton) convertView.findViewById(R.id.list_row_ride_plus_button);
+                holder.rideTime = (TextView) convertView.findViewById(R.id.list_row_ride_time_textView);
                 convertView.setTag(holder);
             }
             else
@@ -160,6 +161,7 @@ public class RidesListFragment extends Fragment {
             holder.contactImage.setImageBitmap(rideInPosition.getRideOwner().getUserImage());
             holder.rideId.setText(rideInPosition.getRideID());
             holder.rideDate.setText(Objects.toString(rideInPosition.getDate(),null));
+            holder.rideTime.setText(Objects.toString(rideInPosition.getTime(),null));
             holder.freeSeats.setText(Objects.toString(rideInPosition.getFreeSeats(),null));
             holder.from.setText(rideInPosition.getFrom());
             holder.to.setText(rideInPosition.getTo());
@@ -265,6 +267,7 @@ public class RidesListFragment extends Fragment {
             TextView freeSeats;
             TextView from;
             TextView to;
+            TextView rideTime;
         }
 
 

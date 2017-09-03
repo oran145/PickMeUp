@@ -59,45 +59,17 @@ public class ModelFirebase {
 
         //initialize the FirebaseAuth instance and the AuthStateListener method so you can track whenever the user signs in or out.
         // [START auth_state_listener]
-        mAuthListener = new FirebaseAuth.AuthStateListener() {
+        mAuthListener = new FirebaseAuth.AuthStateListener()
+        {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 FirebaseUser user = firebaseAuth.getCurrentUser();
-//                if (user != null) {
-//                    // User is signed in
-//                    Log.d(TAG, "onAuthStateChanged:signed_in:" + user.getUid());
-//                } else {
-//                    // User is signed out
-//                    Log.d(TAG, "onAuthStateChanged:signed_out");
-//                }
-                // [START_EXCLUDE]
-                //updateUI(user);
-                // [END_EXCLUDE]
+
             }
         };
-        // [END auth_state_listener]
-        //-----------End Authentication------------
-        //--------------firebase database---------------
+
         database= FirebaseDatabase.getInstance();
         mStorageRef = FirebaseStorage.getInstance().getReference();
-    }
-    /**
-     * sets a listenr wich indicates if the user is signed in
-     */
-    public void addAuthStateListener(final Model.LoginListener listener)
-    {
-        //add a listener which indicates weather the usr is authonticated or not.
-        //if the user was authonticated previously,Firebase will try to renew its session with the roundtrip to the server
-        mAuth.addAuthStateListener(mAuthListener);
-    }
-    public void removeAuthStateListener()
-    {
-        if (mAuthListener != null) {
-            //add a listener which indicates weather the usr is authonticated or not.
-            //if the user was authonticated previously,Firebase will try to renew its session with the roundtrip to the server
-            mAuth.removeAuthStateListener(mAuthListener);
-        }
-
     }
 
     /**
@@ -225,16 +197,6 @@ public class ModelFirebase {
         // [END sign_in_with_email]
     }
 
-//    public void signOut(final Model.SignInListener databseListener,Model.ChatListener chatListener) {
-//
-//        chatListener.showProgressBar();
-//        databseListener.changeIsSignedInLocal(mAuth.getCurrentUser().getUid(),0);
-//        databseListener.changeIsSignedInRemote(mAuth.getCurrentUser().getUid(),false);
-//        mAuth.signOut();
-//        chatListener.hideProgressBar();
-//        chatListener.goToMainActivity();
-//
-//    }
 
     public void signInAfterRegister(String email, String password,final Model.LoginListener listener, final Model.SignInListener databseListener)
     {
@@ -571,7 +533,6 @@ public class ModelFirebase {
     {
         database.getReference("ride").child(rideID).removeValue();
     }
-
 
 
 }

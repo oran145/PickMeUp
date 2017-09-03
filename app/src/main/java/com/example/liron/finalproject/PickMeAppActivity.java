@@ -127,7 +127,7 @@ public class PickMeAppActivity extends Activity {
                 emailIntent.setType("message/rfc822");
                 emailIntent.putExtra(Intent.EXTRA_EMAIL, TO);
                 emailIntent.putExtra(Intent.EXTRA_SUBJECT, "ride register");
-                emailIntent.putExtra(Intent.EXTRA_TEXT, "... was registered to your ride");
+                emailIntent.putExtra(Intent.EXTRA_TEXT, "write your message");
                 try
                 {
                     startActivity(Intent.createChooser(emailIntent, "Send mail..."));
@@ -141,13 +141,51 @@ public class PickMeAppActivity extends Activity {
             @Override
             public void rideUnsubEmail(String ownerEmail)
             {
+                Intent emailIntent = new Intent(Intent.ACTION_SEND);
+
+                String[] TO={ownerEmail};
+
+                emailIntent.setType("message/rfc822");
+                emailIntent.putExtra(Intent.EXTRA_EMAIL, TO);
+                emailIntent.putExtra(Intent.EXTRA_SUBJECT, "ride unregister");
+                emailIntent.putExtra(Intent.EXTRA_TEXT, "write your message");
+                try
+                {
+                    startActivity(Intent.createChooser(emailIntent, "Send mail..."));
+                }
+                catch (android.content.ActivityNotFoundException ex)
+                {
+                    Toast.makeText(PickMeAppActivity.this, "There are no email clients installed.", Toast.LENGTH_SHORT).show();
+                }
 
             }
 
             @Override
             public void rideDeleteEmail(Ride ride)
             {
+                Intent emailIntent = new Intent(Intent.ACTION_SEND);
 
+                String[] TO = new String[ride.getHitchhikers().size()];
+
+                int i = 0;
+                for (String id:ride.getHitchhikers())
+                {
+                    TO[i] = Model.getInstance().getEmailById(id);
+                    i++;
+                }
+
+                emailIntent.setType("message/rfc822");
+                emailIntent.putExtra(Intent.EXTRA_EMAIL, TO);
+                emailIntent.putExtra(Intent.EXTRA_SUBJECT, "ride deleted");
+                emailIntent.putExtra(Intent.EXTRA_TEXT, "write your message");
+                try
+                {
+                    startActivity(Intent.createChooser(emailIntent, "Send mail..."));
+                }
+                catch (android.content.ActivityNotFoundException ex)
+                {
+                    Toast.makeText(PickMeAppActivity.this, "There are no email clients installed.", Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }
@@ -163,26 +201,6 @@ public class PickMeAppActivity extends Activity {
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle item selection
         switch (item.getItemId()) {
-//            case R.id.sign_out:
-//                Model.getInstance().signOut(new Model.() {
-//                    @Override
-//                    public void goToMainActivity() {
-//                        Intent intent = new Intent(PickMeAppActivity.this, MainActivity.class);
-//                        finish();
-//                        startActivity(intent);
-//                    }
-//
-//                    @Override
-//                    public void showProgressBar() {
-//                        myProgressBar.showProgressDialog();
-//                    }
-//
-//                    @Override
-//                    public void hideProgressBar() {
-//                        myProgressBar.hideProgressDialog();
-//                    }
-//                });
-//                return true;
             case R.id.add:
                 ftr=getFragmentManager().beginTransaction();
                 ftr.add(R.id.pickMeUp_container, addRideFragment);

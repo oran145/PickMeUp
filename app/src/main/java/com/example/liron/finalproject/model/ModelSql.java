@@ -60,5 +60,10 @@ public class ModelSql {
         }
     }
 
+    public String getEmailById(String id)
+    {
+        User user = UserSql.getUserById(helper.getReadableDatabase(),id);
+        return user.getEmail();
+    }
 
 }
