@@ -16,6 +16,7 @@ import android.widget.ListView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.example.liron.finalproject.MyAppContext;
 import com.example.liron.finalproject.R;
 import com.example.liron.finalproject.model.Model;
@@ -31,15 +32,25 @@ public class RidesListFragment extends Fragment {
     RidesListAdapter ridesAdapter;
     String currentUserId;
 
-    public interface Delegate{
+    public interface rideDelegate {
         void onItemClick(User user);
         void showProgressBar();
         void hideProgressBar();
     }
 
-    Delegate delegate;
-    public void setDelegate(Delegate dlg){
-        this.delegate = dlg;
+    public interface emailDelegate
+    {
+        void rideSubEmail(String ownerEmail);
+        void rideUnsubEmail(String ownerEmail);
+        void rideDeleteEmail(Ride ride);
+    }
+
+    rideDelegate rideDelegate;
+    emailDelegate emailDelegate;
+
+    public void setEmailDelegate(emailDelegate edlg) {this.emailDelegate = edlg;}
+    public void setRideDelegate(rideDelegate dlg){
+        this.rideDelegate = dlg;
     }
 
 
@@ -76,12 +87,12 @@ public class RidesListFragment extends Fragment {
             }
 
             public void showProgressBar() {
-                delegate.showProgressBar();
+                rideDelegate.showProgressBar();
             }
 
             public void hideProgressBar()
             {
-                delegate.hideProgressBar();
+                rideDelegate.hideProgressBar();
             }
         });
     }
@@ -127,6 +138,7 @@ public class RidesListFragment extends Fragment {
                 holder.from = (TextView) convertView.findViewById(R.id.list_row_ride_from_textView);
                 holder.to = (TextView) convertView.findViewById(R.id.list_row_ride_to_textView);
                 holder.plusButton = (ImageButton) convertView.findViewById(R.id.list_row_ride_plus_button);
+                holder.rideTime = (TextView) convertView.findViewById(R.id.list_row_ride_time_textView);
                 convertView.setTag(holder);
             }
             else
@@ -149,10 +161,20 @@ public class RidesListFragment extends Fragment {
             holder.contactImage.setImageBitmap(rideInPosition.getRideOwner().getUserImage());
             holder.rideId.setText(rideInPosition.getRideID());
             holder.rideDate.setText(Objects.toString(rideInPosition.getDate(),null));
+            holder.rideTime.setText(Objects.toString(rideInPosition.getTime(),null));
             holder.freeSeats.setText(Objects.toString(rideInPosition.getFreeSeats(),null));
             holder.from.setText(rideInPosition.getFrom());
             holder.to.setText(rideInPosition.getTo());
             holder.plusButton.setTag(position);
+
+            String imgeUrlTest = rideInPosition.getRideOwner().getImageFireBaseUrl();
+
+            Glide.with(MyAppContext.getAppContext())
+                    .load(imgeUrlTest)
+                    //.asBitmap()
+                    // .toBytes()
+                    .centerCrop()
+                    .into(holder.contactImage);
 
             holder.plusButton.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -202,17 +224,17 @@ public class RidesListFragment extends Fragment {
                                         case R.id.subscribe:
 
                                             Model.getInstance().addHitchhiker(tempRide.getRideID());
-
+                                            emailDelegate.rideSubEmail(tempRide.getRideOwner().getEmail().toString());
                                             break;
 
                                         case R.id.unsubscribe:
                                             Model.getInstance().removeHitchhiker(tempRide.getRideID());
-
+                                            emailDelegate.rideUnsubEmail(tempRide.getRideOwner().getEmail().toString());
                                             break;
 
                                         case R.id.delete:
-
                                             Model.getInstance().removeRide(tempRide.getRideID());
+                                            emailDelegate.rideDeleteEmail(tempRide);
                                             break;
 
                                         default:
@@ -245,6 +267,7 @@ public class RidesListFragment extends Fragment {
             TextView freeSeats;
             TextView from;
             TextView to;
+            TextView rideTime;
         }
 
 

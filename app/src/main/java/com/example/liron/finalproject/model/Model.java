@@ -251,5 +251,9 @@ public class Model {
         modelFirebase.addRide(r,saveRideListener);
     }
 
+    public String getEmailById(String id)
+    {
+        return  modelSql.getEmailById(id);
+    }
 
 }
